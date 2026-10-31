@@ -1,0 +1,25 @@
+/* Variáveis de cor: mudar aqui muda o site inteiro */
+:root {
+    --fundo: #12141c;
+    --card: #1c1f2b;
+    --texto: #e8eaf2;
+    --destaque: #6c5ce7;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+}
+
+.login {
+    max-width: 420px;
+    margin: 4rem auto;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+h1 {
+    color: var(--destaque);
+}
