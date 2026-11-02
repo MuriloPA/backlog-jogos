@@ -5,6 +5,7 @@
     --destaque: #6c5ce7;
     --borda: #343850;
     --suave: #9aa0b8;
+    --perigo: #ff7675;
 }
 
 * {
@@ -37,7 +38,8 @@ h1 {
     margin-top: 2rem;
 }
 
-.formulario label {
+.formulario label,
+.rotulo {
     font-size: 0.9rem;
 }
 
@@ -79,13 +81,24 @@ h1 {
     border: 1px solid var(--borda);
 }
 
+.btn-pequeno {
+    flex: 1;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+}
+
+.btn-perigo {
+    color: var(--perigo);
+    border-color: var(--perigo);
+}
+
 .mensagem {
     min-height: 1.2rem;
     font-size: 0.9rem;
 }
 
 .mensagem.erro {
-    color: #ff7675;
+    color: var(--perigo);
 }
 
 .mensagem.ok {
@@ -147,6 +160,66 @@ h1 {
     grid-column: 1 / -1;
 }
 
+.linha-botoes {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.formulario .chip {
+    position: relative;
+    cursor: pointer;
+}
+
+.formulario .chip input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    padding: 0;
+    border: none;
+}
+
+.chip span {
+    display: inline-block;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--borda);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    background: transparent;
+    color: var(--suave);
+    user-select: none;
+}
+
+.chip input:checked + span {
+    background: var(--destaque);
+    border-color: var(--destaque);
+    color: #fff;
+}
+
+.chip input:focus-visible + span {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.linha-outro {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+}
+
+.formulario .linha-outro input {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+}
+
 .grade {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -154,6 +227,8 @@ h1 {
 }
 
 .card {
+    display: flex;
+    flex-direction: column;
     background: var(--card);
     border: 1px solid var(--borda);
     border-radius: 8px;
@@ -169,6 +244,7 @@ h1 {
 }
 
 .card-corpo {
+    flex: 1;
     padding: 0.8rem;
 }
 
@@ -181,6 +257,12 @@ h1 {
     margin: 0.3rem 0;
     font-size: 0.85rem;
     color: var(--suave);
+}
+
+.card-acoes {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0 0.8rem 0.8rem;
 }
 
 .badge {
@@ -209,6 +291,55 @@ h1 {
 
 .vazio {
     color: var(--suave);
+}
+
+#toasts {
+    position: fixed;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: min(90vw, 420px);
+    pointer-events: none;
+}
+
+.toast {
+    padding: 0.9rem 1.2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    animation: toast-entrar 0.25s ease-out;
+}
+
+.toast-ok {
+    background: #1e8e6a;
+}
+
+.toast-erro {
+    background: #c0392b;
+}
+
+.toast.saindo {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+@keyframes toast-entrar {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @media (max-width: 600px) {

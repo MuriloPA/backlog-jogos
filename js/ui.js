@@ -13,7 +13,14 @@ function criarElemento(tag, classe, texto) {
     return elemento;
 }
 
-export function criarCard(jogo) {
+function criarBotao(texto, classe, aoClicar) {
+    const botao = criarElemento("button", classe, texto);
+    botao.type = "button";
+    botao.addEventListener("click", aoClicar);
+    return botao;
+}
+
+export function criarCard(jogo, acoes) {
     const card = criarElemento("article", "card");
 
     const capa = document.createElement("img");
@@ -44,7 +51,16 @@ export function criarCard(jogo) {
         : jogo.horas_jogadas + " h jogadas";
     corpo.appendChild(criarElemento("p", "card-meta", horas));
 
+    const rodape = criarElemento("div", "card-acoes");
+    rodape.appendChild(
+        criarBotao("Editar", "btn-secundario btn-pequeno", () => acoes.aoEditar(jogo))
+    );
+    rodape.appendChild(
+        criarBotao("Excluir", "btn-secundario btn-pequeno btn-perigo", () => acoes.aoExcluir(jogo))
+    );
+
     card.appendChild(capa);
     card.appendChild(corpo);
+    card.appendChild(rodape);
     return card;
 }

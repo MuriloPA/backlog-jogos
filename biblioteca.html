@@ -16,8 +16,8 @@
     </header>
 
     <main class="conteudo">
-        <details class="painel-form">
-            <summary>Adicionar jogo</summary>
+        <details id="painel-form" class="painel-form">
+            <summary id="resumo-form">Adicionar jogo</summary>
 
             <form id="form-jogo" class="formulario formulario-jogo" novalidate>
                 <div class="campo campo-largo">
@@ -25,14 +25,18 @@
                     <input type="text" id="titulo" name="titulo" maxlength="120">
                 </div>
 
-                <div class="campo">
+                <div class="campo campo-largo">
                     <label for="plataforma">Plataforma</label>
                     <input type="text" id="plataforma" name="plataforma" maxlength="60" placeholder="PC, PS5, Switch...">
                 </div>
 
-                <div class="campo">
-                    <label for="genero">Gênero</label>
-                    <input type="text" id="genero" name="genero" maxlength="60" placeholder="RPG, Ação...">
+                <div class="campo campo-largo">
+                    <span class="rotulo">Gêneros</span>
+                    <div id="generos" class="chips"></div>
+                    <div class="linha-outro">
+                        <input type="text" id="genero-outro" maxlength="30" placeholder="Outro gênero">
+                        <button type="button" id="btn-genero-outro" class="btn-secundario">Adicionar</button>
+                    </div>
                 </div>
 
                 <div class="campo campo-largo">
@@ -77,14 +81,15 @@
                 </div>
 
                 <div class="campo campo-largo">
-                    <button type="submit" id="btn-salvar" class="btn-principal">Salvar jogo</button>
-                    <p id="mensagem-form" class="mensagem"></p>
+                    <div class="linha-botoes">
+                        <button type="submit" id="btn-salvar" class="btn-principal">Salvar jogo</button>
+                        <button type="button" id="btn-cancelar" class="btn-secundario" hidden>Cancelar edição</button>
+                    </div>
                 </div>
             </form>
         </details>
 
         <h2>Sua biblioteca</h2>
-        <p id="mensagem-lista" class="mensagem"></p>
         <p id="vazio" class="vazio" hidden>Você ainda não adicionou nenhum jogo.</p>
         <section id="lista-jogos" class="grade"></section>
     </main>

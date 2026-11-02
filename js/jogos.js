@@ -10,3 +10,11 @@ export async function listarJogos() {
 export async function adicionarJogo(jogo) {
     return await supabase.from("jogos").insert(jogo);
 }
+
+export async function atualizarJogo(id, jogo) {
+    return await supabase.from("jogos").update(jogo).eq("id", id);
+}
+
+export async function excluirJogo(id) {
+    return await supabase.from("jogos").delete().eq("id", id);
+}
