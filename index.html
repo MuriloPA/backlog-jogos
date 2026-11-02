@@ -10,6 +10,21 @@
     <main class="login">
         <h1>Backlog Zero</h1>
         <p>Organize sua fila de jogos e decida o que jogar.</p>
+
+        <form id="form-login" class="formulario" novalidate>
+            <label for="email">E-mail</label>
+            <input type="email" id="email" autocomplete="email" required>
+
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" autocomplete="current-password" required>
+
+            <button type="submit" class="btn-principal">Entrar</button>
+            <button type="button" id="btn-criar" class="btn-secundario">Criar conta</button>
+
+            <p id="mensagem" class="mensagem"></p>
+        </form>
     </main>
+
+    <script type="module" src="js/login.js"></script>
 </body>
 </html>

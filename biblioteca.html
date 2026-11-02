@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca - Backlog Zero</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="topo">
+        <span class="logo">Backlog Zero</span>
+        <div>
+            <span id="usuario"></span>
+            <button id="btn-sair" class="btn-secundario">Sair</button>
+        </div>
+    </header>
+
+    <main class="conteudo">
+        <h2>Sua biblioteca</h2>
+        <p>Em breve: seus jogos aparecerão aqui.</p>
+    </main>
+
+    <script type="module">
+        import { obterSessao, sair } from "./js/auth.js";
+
+        // Página protegida: sem sessão, volta para o login
+        const sessao = await obterSessao();
+        if (!sessao) {
+            window.location.href = "index.html";
+        } else {
+            document.getElementById("usuario").textContent = sessao.user.email;
+        }
+
+        document.getElementById("btn-sair").addEventListener("click", async () => {
+            await sair();
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>
