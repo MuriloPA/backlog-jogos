@@ -1,9 +1,14 @@
-/* Variáveis de cor: mudar aqui muda o site inteiro */
 :root {
     --fundo: #12141c;
     --card: #1c1f2b;
     --texto: #e8eaf2;
     --destaque: #6c5ce7;
+    --borda: #343850;
+    --suave: #9aa0b8;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
@@ -13,6 +18,10 @@ body {
     color: var(--texto);
 }
 
+h1 {
+    color: var(--destaque);
+}
+
 .login {
     max-width: 420px;
     margin: 4rem auto;
@@ -20,11 +29,6 @@ body {
     text-align: center;
 }
 
-h1 {
-    color: var(--destaque);
-}
-
-/* ---------- Formulário ---------- */
 .formulario {
     display: flex;
     flex-direction: column;
@@ -37,13 +41,17 @@ h1 {
     font-size: 0.9rem;
 }
 
-.formulario input {
+.formulario input,
+.formulario select,
+.formulario textarea {
+    width: 100%;
     padding: 0.7rem;
-    border: 1px solid #343850;
+    border: 1px solid var(--borda);
     border-radius: 6px;
     background: var(--card);
     color: var(--texto);
     font-size: 1rem;
+    font-family: inherit;
 }
 
 .btn-principal,
@@ -60,10 +68,15 @@ h1 {
     border: none;
 }
 
+.btn-principal:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .btn-secundario {
     background: transparent;
     color: var(--texto);
-    border: 1px solid #343850;
+    border: 1px solid var(--borda);
 }
 
 .mensagem {
@@ -71,10 +84,14 @@ h1 {
     font-size: 0.9rem;
 }
 
-.mensagem.erro { color: #ff7675; }
-.mensagem.ok { color: #55efc4; }
+.mensagem.erro {
+    color: #ff7675;
+}
 
-/* ---------- Topo e conteúdo das páginas internas ---------- */
+.mensagem.ok {
+    color: #55efc4;
+}
+
 .topo {
     display: flex;
     justify-content: space-between;
@@ -95,7 +112,111 @@ h1 {
 }
 
 .conteudo {
-    max-width: 960px;
+    max-width: 1000px;
     margin: 2rem auto;
     padding: 0 1rem;
+}
+
+.painel-form {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.painel-form summary {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.formulario-jogo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.campo-largo {
+    grid-column: 1 / -1;
+}
+
+.grade {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.capa {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    background: #252a3a;
+}
+
+.card-corpo {
+    padding: 0.8rem;
+}
+
+.card-titulo {
+    margin: 0 0 0.4rem;
+    font-size: 1rem;
+}
+
+.card-meta {
+    margin: 0.3rem 0;
+    font-size: 0.85rem;
+    color: var(--suave);
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin: 0.3rem 0;
+}
+
+.status-fila {
+    background: #2d3250;
+    color: #a5b4fc;
+}
+
+.status-jogando {
+    background: #4a3b12;
+    color: #fdcb6e;
+}
+
+.status-zerado {
+    background: #134a38;
+    color: #55efc4;
+}
+
+.vazio {
+    color: var(--suave);
+}
+
+@media (max-width: 600px) {
+    .formulario-jogo {
+        grid-template-columns: 1fr;
+    }
+
+    .grade {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

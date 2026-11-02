@@ -16,25 +16,79 @@
     </header>
 
     <main class="conteudo">
+        <details class="painel-form">
+            <summary>Adicionar jogo</summary>
+
+            <form id="form-jogo" class="formulario formulario-jogo" novalidate>
+                <div class="campo campo-largo">
+                    <label for="titulo">Título *</label>
+                    <input type="text" id="titulo" name="titulo" maxlength="120">
+                </div>
+
+                <div class="campo">
+                    <label for="plataforma">Plataforma</label>
+                    <input type="text" id="plataforma" name="plataforma" maxlength="60" placeholder="PC, PS5, Switch...">
+                </div>
+
+                <div class="campo">
+                    <label for="genero">Gênero</label>
+                    <input type="text" id="genero" name="genero" maxlength="60" placeholder="RPG, Ação...">
+                </div>
+
+                <div class="campo campo-largo">
+                    <label for="capa_url">Link da capa</label>
+                    <input type="url" id="capa_url" name="capa_url" placeholder="https://...">
+                </div>
+
+                <div class="campo">
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        <option value="fila">Na fila</option>
+                        <option value="jogando">Jogando</option>
+                        <option value="zerado">Zerado</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="nota">Nota</label>
+                    <select id="nota" name="nota">
+                        <option value="">Sem nota</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="horas_jogadas">Horas jogadas</label>
+                    <input type="number" id="horas_jogadas" name="horas_jogadas" min="0" step="0.5" value="0">
+                </div>
+
+                <div class="campo">
+                    <label for="horas_estimadas">Horas para zerar</label>
+                    <input type="number" id="horas_estimadas" name="horas_estimadas" min="0.5" step="0.5">
+                </div>
+
+                <div class="campo campo-largo">
+                    <label for="opiniao">Opinião</label>
+                    <textarea id="opiniao" name="opiniao" rows="3" maxlength="500"></textarea>
+                </div>
+
+                <div class="campo campo-largo">
+                    <button type="submit" id="btn-salvar" class="btn-principal">Salvar jogo</button>
+                    <p id="mensagem-form" class="mensagem"></p>
+                </div>
+            </form>
+        </details>
+
         <h2>Sua biblioteca</h2>
-        <p>Em breve: seus jogos aparecerão aqui.</p>
+        <p id="mensagem-lista" class="mensagem"></p>
+        <p id="vazio" class="vazio" hidden>Você ainda não adicionou nenhum jogo.</p>
+        <section id="lista-jogos" class="grade"></section>
     </main>
 
-    <script type="module">
-        import { obterSessao, sair } from "./js/auth.js";
-
-        // Página protegida: sem sessão, volta para o login
-        const sessao = await obterSessao();
-        if (!sessao) {
-            window.location.href = "index.html";
-        } else {
-            document.getElementById("usuario").textContent = sessao.user.email;
-        }
-
-        document.getElementById("btn-sair").addEventListener("click", async () => {
-            await sair();
-            window.location.href = "index.html";
-        });
-    </script>
+    <script type="module" src="js/biblioteca.js"></script>
 </body>
 </html>
