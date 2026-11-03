@@ -12,6 +12,10 @@
     box-sizing: border-box;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -409,6 +413,186 @@ h1 {
     margin-top: 0.8rem;
 }
 
+.indicadores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 1rem;
+    margin: 1.2rem 0;
+}
+
+.indicador {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.indicador-rotulo {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--suave);
+}
+
+.indicador-valor {
+    margin: 0.3rem 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.indicador-detalhe {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--suave);
+}
+
+.graficos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.grafico {
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.grafico h3 {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+}
+
+.rosca {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+}
+
+.rosca-svg {
+    width: 160px;
+    height: 160px;
+    flex-shrink: 0;
+}
+
+.rosca-fundo,
+.rosca-arco {
+    fill: none;
+    stroke-width: 16;
+}
+
+.rosca-fundo {
+    stroke: var(--borda);
+}
+
+.arco-fila {
+    stroke: #a5b4fc;
+}
+
+.arco-jogando {
+    stroke: #fdcb6e;
+}
+
+.arco-zerado {
+    stroke: #55efc4;
+}
+
+.rosca-total {
+    fill: var(--texto);
+    font-size: 18px;
+    font-weight: bold;
+    text-anchor: middle;
+}
+
+.rosca-subtitulo {
+    fill: var(--suave);
+    font-size: 7px;
+    text-anchor: middle;
+}
+
+.legenda {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.legenda li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.ponto {
+    display: inline-block;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+}
+
+.ponto-fila {
+    background: #a5b4fc;
+}
+
+.ponto-jogando {
+    background: #fdcb6e;
+}
+
+.ponto-zerado {
+    background: #55efc4;
+}
+
+.barras {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.barra-linha {
+    display: grid;
+    grid-template-columns: 110px 1fr 28px;
+    gap: 0.6rem;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.barra-rotulo {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.barra-trilho {
+    height: 0.8rem;
+    background: #252a3a;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.barra-preenchimento {
+    height: 100%;
+    background: var(--destaque);
+    border-radius: 999px;
+}
+
+.barra-valor {
+    text-align: right;
+    color: var(--suave);
+}
+
+.nota-grafico {
+    margin: 1rem 0 0;
+    font-size: 0.8rem;
+    color: var(--suave);
+}
+
 #toasts {
     position: fixed;
     top: 1.5rem;
@@ -474,6 +658,10 @@ h1 {
     .sorteio-form button {
         grid-column: 1 / -1;
     }
+
+    .graficos {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 600px) {
@@ -500,5 +688,10 @@ h1 {
     .resultado-card .capa {
         width: 100%;
         aspect-ratio: 4 / 3;
+    }
+
+    .topo-esquerda {
+        flex-wrap: wrap;
+        gap: 0.6rem 1rem;
     }
 }

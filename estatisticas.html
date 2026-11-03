@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatísticas - PlayLog</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="topo">
+        <div class="topo-esquerda">
+            <span class="logo">PlayLog</span>
+            <nav class="menu">
+                <a href="biblioteca.html">Biblioteca</a>
+                <a href="sorteio.html">Sorteio</a>
+                <a href="estatisticas.html" aria-current="page">Estatísticas</a>
+            </nav>
+        </div>
+        <div>
+            <span id="usuario"></span>
+            <button id="btn-sair" class="btn-secundario">Sair</button>
+        </div>
+    </header>
+
+    <main class="conteudo">
+        <h2>Estatísticas</h2>
+
+        <p id="vazio-stats" class="vazio" hidden>Adicione jogos na biblioteca para ver suas estatísticas.</p>
+
+        <div id="painel-stats" hidden>
+            <section id="indicadores" class="indicadores"></section>
+
+            <div class="graficos">
+                <section class="grafico">
+                    <h3>Jogos por status</h3>
+                    <div id="grafico-status"></div>
+                </section>
+
+                <section class="grafico">
+                    <h3>Jogos por gênero</h3>
+                    <div id="grafico-generos"></div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="js/estatisticas-pagina.js"></script>
+</body>
+</html>
