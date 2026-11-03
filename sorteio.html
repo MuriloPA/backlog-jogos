@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteio - PlayLog</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="topo">
+        <div class="topo-esquerda">
+            <span class="logo">PlayLog</span>
+            <nav class="menu">
+                <a href="biblioteca.html">Biblioteca</a>
+                <a href="sorteio.html" aria-current="page">Sorteio</a>
+            </nav>
+        </div>
+        <div>
+            <span id="usuario"></span>
+            <button id="btn-sair" class="btn-secundario">Sair</button>
+        </div>
+    </header>
+
+    <main class="conteudo">
+        <h2>Sorteio</h2>
+        <p class="vazio">Diga quanto tempo você quer gastar e deixe o PlayLog escolher um jogo da sua fila. Quanto mais tempo um jogo espera, maior a chance dele sair.</p>
+
+        <section class="sorteio-form">
+            <div class="campo">
+                <label for="tempo">Quero um jogo que eu consiga zerar em até</label>
+                <select id="tempo">
+                    <option value="">Qualquer duração</option>
+                    <option value="2">2 horas</option>
+                    <option value="5">5 horas</option>
+                    <option value="10">10 horas</option>
+                    <option value="20">20 horas</option>
+                    <option value="40">40 horas</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="genero-sorteio">Gênero</label>
+                <select id="genero-sorteio">
+                    <option value="">Qualquer gênero</option>
+                </select>
+            </div>
+
+            <button type="button" id="btn-sortear" class="btn-principal" disabled>Sortear</button>
+        </section>
+
+        <p id="resumo-sorteio" class="contador"></p>
+        <section id="resultado"></section>
+    </main>
+
+    <script type="module" src="js/sorteio-pagina.js"></script>
+</body>
+</html>

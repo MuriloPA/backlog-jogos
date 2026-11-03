@@ -107,6 +107,8 @@ h1 {
 
 .topo {
     display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
@@ -117,6 +119,34 @@ h1 {
     color: var(--destaque);
     font-weight: bold;
     font-size: 1.2rem;
+}
+
+.topo-esquerda {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.menu {
+    display: flex;
+    gap: 1rem;
+}
+
+.menu a {
+    padding: 0.3rem 0;
+    border-bottom: 2px solid transparent;
+    color: var(--suave);
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    color: var(--texto);
+}
+
+.menu a[aria-current="page"] {
+    color: var(--texto);
+    border-bottom-color: var(--destaque);
 }
 
 #usuario {
@@ -228,7 +258,8 @@ h1 {
 }
 
 .filtros input,
-.filtros select {
+.filtros select,
+.sorteio-form select {
     width: 100%;
     min-width: 0;
     padding: 0.6rem;
@@ -324,6 +355,60 @@ h1 {
     color: var(--suave);
 }
 
+.sorteio-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 0.8rem;
+    align-items: end;
+    margin: 1.2rem 0 0.8rem;
+}
+
+.sorteio-form label {
+    font-size: 0.9rem;
+}
+
+.sorteio-form button {
+    padding: 0.7rem 1.6rem;
+}
+
+.resultado-card {
+    display: flex;
+    background: var(--card);
+    border: 1px solid var(--destaque);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.resultado-card .capa {
+    width: 190px;
+    flex-shrink: 0;
+}
+
+.resultado-corpo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 1.2rem;
+}
+
+.resultado-rotulo {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--suave);
+}
+
+.resultado-titulo {
+    margin: 0 0 0.3rem;
+    font-size: 1.6rem;
+}
+
+.resultado-corpo .btn-principal {
+    align-self: flex-start;
+    margin-top: 0.8rem;
+}
+
 #toasts {
     position: fixed;
     top: 1.5rem;
@@ -381,6 +466,14 @@ h1 {
     .filtro-busca {
         grid-column: 1 / -1;
     }
+
+    .sorteio-form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .sorteio-form button {
+        grid-column: 1 / -1;
+    }
 }
 
 @media (max-width: 600px) {
@@ -394,5 +487,18 @@ h1 {
 
     .grade {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sorteio-form {
+        grid-template-columns: 1fr;
+    }
+
+    .resultado-card {
+        flex-direction: column;
+    }
+
+    .resultado-card .capa {
+        width: 100%;
+        aspect-ratio: 4 / 3;
     }
 }

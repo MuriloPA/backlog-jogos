@@ -1,4 +1,4 @@
-# Backlog Zero
+# PlayLog
 
 Site para organizar a fila de jogos e sortear o que jogar.
 Projeto da disciplina Tópicos Integradores (ADS).

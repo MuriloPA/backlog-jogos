@@ -5,7 +5,7 @@ export function separarLista(texto) {
         .filter(Boolean);
 }
 
-function normalizar(texto) {
+export function normalizar(texto) {
     return (texto || "")
         .toString()
         .toLowerCase()
