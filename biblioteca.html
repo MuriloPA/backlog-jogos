@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biblioteca - Backlog Zero</title>
+    <title>Biblioteca - PlayLog</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header class="topo">
-        <span class="logo">Backlog Zero</span>
+        <span class="logo">PlayLog</span>
         <div>
             <span id="usuario"></span>
             <button id="btn-sair" class="btn-secundario">Sair</button>
@@ -26,8 +26,12 @@
                 </div>
 
                 <div class="campo campo-largo">
-                    <label for="plataforma">Plataforma</label>
-                    <input type="text" id="plataforma" name="plataforma" maxlength="60" placeholder="PC, PS5, Switch...">
+                    <span class="rotulo">Plataformas</span>
+                    <div id="plataformas" class="chips"></div>
+                    <div class="linha-outro">
+                        <input type="text" id="plataforma-outro" maxlength="30" placeholder="Outra plataforma">
+                        <button type="button" id="btn-plataforma-outro" class="btn-secundario">Adicionar</button>
+                    </div>
                 </div>
 
                 <div class="campo campo-largo">
@@ -90,7 +94,40 @@
         </details>
 
         <h2>Sua biblioteca</h2>
+
+        <section id="painel-filtros" class="filtros" hidden>
+            <input type="search" id="busca" class="filtro-busca" placeholder="Buscar pelo título" maxlength="120" aria-label="Buscar pelo título">
+
+            <select id="filtro-status" aria-label="Filtrar por status">
+                <option value="">Todos os status</option>
+                <option value="fila">Na fila</option>
+                <option value="jogando">Jogando</option>
+                <option value="zerado">Zerado</option>
+            </select>
+
+            <select id="filtro-plataforma" aria-label="Filtrar por plataforma">
+                <option value="">Todas as plataformas</option>
+            </select>
+
+            <select id="filtro-genero" aria-label="Filtrar por gênero">
+                <option value="">Todos os gêneros</option>
+            </select>
+
+            <select id="ordenacao" aria-label="Ordenar por">
+                <option value="recentes">Mais recentes</option>
+                <option value="antigos">Mais antigos</option>
+                <option value="titulo">Título (A-Z)</option>
+                <option value="nota">Maior nota</option>
+                <option value="horas">Mais horas jogadas</option>
+                <option value="curtos">Mais curtos primeiro</option>
+            </select>
+
+            <button type="button" id="btn-limpar" class="btn-secundario">Limpar</button>
+        </section>
+
+        <p id="contador" class="contador"></p>
         <p id="vazio" class="vazio" hidden>Você ainda não adicionou nenhum jogo.</p>
+        <p id="sem-resultados" class="vazio" hidden>Nenhum jogo encontrado com esses filtros.</p>
         <section id="lista-jogos" class="grade"></section>
     </main>
 

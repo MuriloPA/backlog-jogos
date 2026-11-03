@@ -3,79 +3,50 @@ import { listarJogos, adicionarJogo, atualizarJogo, excluirJogo } from "./jogos.
 import { criarCard } from "./ui.js";
 import { mostrarToast } from "./toast.js";
 import { GENEROS } from "./generos.js";
+import { PLATAFORMAS } from "./plataformas.js";
+import { criarSeletorChips } from "./chips.js";
+import { separarLista, filtrarJogos, ordenarJogos, listarOpcoes } from "./filtros.js";
 
 const lista = document.getElementById("lista-jogos");
 const vazio = document.getElementById("vazio");
+const semResultados = document.getElementById("sem-resultados");
+const contador = document.getElementById("contador");
+const painelFiltros = document.getElementById("painel-filtros");
+const campoBusca = document.getElementById("busca");
+const filtroStatus = document.getElementById("filtro-status");
+const filtroPlataforma = document.getElementById("filtro-plataforma");
+const filtroGenero = document.getElementById("filtro-genero");
+const seletorOrdenacao = document.getElementById("ordenacao");
+const botaoLimpar = document.getElementById("btn-limpar");
 const form = document.getElementById("form-jogo");
 const painel = document.getElementById("painel-form");
 const resumo = document.getElementById("resumo-form");
 const botaoSalvar = document.getElementById("btn-salvar");
 const botaoCancelar = document.getElementById("btn-cancelar");
-const containerGeneros = document.getElementById("generos");
-const campoGeneroOutro = document.getElementById("genero-outro");
-const botaoGeneroOutro = document.getElementById("btn-genero-outro");
+
+const seletorGeneros = criarSeletorChips(document.getElementById("generos"), "genero", GENEROS);
+const seletorPlataformas = criarSeletorChips(document.getElementById("plataformas"), "plataforma", PLATAFORMAS);
 
 let idEmEdicao = null;
+let jogosCarregados = [];
 
-function separarGeneros(texto) {
-    return (texto || "")
-        .split(",")
-        .map((genero) => genero.trim())
-        .filter(Boolean);
-}
-
-function encontrarChip(nome) {
-    const alvo = nome.toLowerCase();
-    return Array.from(containerGeneros.querySelectorAll('input[name="genero"]'))
-        .find((input) => input.value.toLowerCase() === alvo);
-}
-
-function criarChip(nome, marcado) {
-    const rotulo = document.createElement("label");
-    rotulo.className = "chip";
-
-    const input = document.createElement("input");
-    input.type = "checkbox";
-    input.name = "genero";
-    input.value = nome;
-    input.checked = marcado;
-
-    const texto = document.createElement("span");
-    texto.textContent = nome;
-
-    rotulo.append(input, texto);
-    containerGeneros.appendChild(rotulo);
-}
-
-function renderizarChips(selecionados) {
-    containerGeneros.replaceChildren();
-    const marcados = selecionados.map((genero) => genero.toLowerCase());
-
-    GENEROS.forEach((genero) => {
-        criarChip(genero, marcados.includes(genero.toLowerCase()));
-    });
-
-    selecionados.forEach((genero) => {
-        if (!encontrarChip(genero)) criarChip(genero, true);
-    });
-}
-
-function adicionarGeneroPersonalizado() {
-    const nome = campoGeneroOutro.value.trim();
-    if (!nome) return;
-
-    if (nome.includes(",")) {
-        mostrarToast("O gênero não pode ter vírgula.", true);
-        return;
+function ligarCampoOutro(campo, botao, seletor) {
+    function adicionar() {
+        const erro = seletor.adicionar(campo.value);
+        if (erro) {
+            mostrarToast(erro, true);
+            return;
+        }
+        campo.value = "";
     }
 
-    const existente = encontrarChip(nome);
-    if (existente) {
-        existente.checked = true;
-    } else {
-        criarChip(nome, true);
-    }
-    campoGeneroOutro.value = "";
+    botao.addEventListener("click", adicionar);
+    campo.addEventListener("keydown", (evento) => {
+        if (evento.key === "Enter") {
+            evento.preventDefault();
+            adicionar();
+        }
+    });
 }
 
 function lerFormulario() {
@@ -104,11 +75,12 @@ function lerFormulario() {
 
     const nota = texto("nota") === "" ? null : Number(texto("nota"));
     const generos = dados.getAll("genero");
+    const plataformas = dados.getAll("plataforma");
 
     return {
         jogo: {
             titulo: titulo,
-            plataforma: texto("plataforma") || null,
+            plataforma: plataformas.length > 0 ? plataformas.join(", ") : null,
             genero: generos.length > 0 ? generos.join(", ") : null,
             capa_url: capa || null,
             status: texto("status"),
@@ -124,14 +96,14 @@ function entrarModoEdicao(jogo) {
     idEmEdicao = jogo.id;
 
     form.elements["titulo"].value = jogo.titulo;
-    form.elements["plataforma"].value = jogo.plataforma || "";
     form.elements["capa_url"].value = jogo.capa_url || "";
     form.elements["status"].value = jogo.status;
     form.elements["nota"].value = jogo.nota === null ? "" : String(jogo.nota);
     form.elements["horas_jogadas"].value = jogo.horas_jogadas;
     form.elements["horas_estimadas"].value = jogo.horas_estimadas === null ? "" : jogo.horas_estimadas;
     form.elements["opiniao"].value = jogo.opiniao || "";
-    renderizarChips(separarGeneros(jogo.genero));
+    seletorGeneros.renderizar(separarLista(jogo.genero));
+    seletorPlataformas.renderizar(separarLista(jogo.plataforma));
 
     resumo.textContent = "Editar jogo";
     botaoSalvar.textContent = "Atualizar jogo";
@@ -143,10 +115,68 @@ function entrarModoEdicao(jogo) {
 function sairModoEdicao() {
     idEmEdicao = null;
     form.reset();
-    renderizarChips([]);
+    seletorGeneros.renderizar([]);
+    seletorPlataformas.renderizar([]);
     resumo.textContent = "Adicionar jogo";
     botaoSalvar.textContent = "Salvar jogo";
     botaoCancelar.hidden = true;
+}
+
+function preencherSelect(select, opcoes, rotuloTodos) {
+    const atual = select.value;
+    select.replaceChildren();
+
+    const todos = document.createElement("option");
+    todos.value = "";
+    todos.textContent = rotuloTodos;
+    select.appendChild(todos);
+
+    opcoes.forEach((opcao) => {
+        const elemento = document.createElement("option");
+        elemento.value = opcao;
+        elemento.textContent = opcao;
+        select.appendChild(elemento);
+    });
+
+    select.value = opcoes.includes(atual) ? atual : "";
+}
+
+function atualizarOpcoesFiltros() {
+    const plataformas = listarOpcoes(jogosCarregados, (jogo) => separarLista(jogo.plataforma));
+    const generos = listarOpcoes(jogosCarregados, (jogo) => separarLista(jogo.genero));
+    preencherSelect(filtroPlataforma, plataformas, "Todas as plataformas");
+    preencherSelect(filtroGenero, generos, "Todos os gêneros");
+}
+
+function renderizarLista() {
+    const criterios = {
+        busca: campoBusca.value,
+        status: filtroStatus.value,
+        plataforma: filtroPlataforma.value,
+        genero: filtroGenero.value
+    };
+
+    const filtrados = ordenarJogos(filtrarJogos(jogosCarregados, criterios), seletorOrdenacao.value);
+    const acoes = { aoEditar: entrarModoEdicao, aoExcluir: aoExcluir };
+    const total = jogosCarregados.length;
+
+    lista.replaceChildren(...filtrados.map((jogo) => criarCard(jogo, acoes)));
+
+    painelFiltros.hidden = total === 0;
+    vazio.hidden = total > 0;
+    semResultados.hidden = !(total > 0 && filtrados.length === 0);
+    contador.textContent = total === 0
+        ? ""
+        : filtrados.length + " de " + total + (total === 1 ? " jogo" : " jogos");
+}
+
+function limparFiltros() {
+    campoBusca.value = "";
+    filtroStatus.value = "";
+    filtroPlataforma.value = "";
+    filtroGenero.value = "";
+    seletorOrdenacao.value = "recentes";
+    renderizarLista();
 }
 
 async function aoExcluir(jogo) {
@@ -170,9 +200,9 @@ async function carregarJogos() {
         mostrarToast("Não foi possível carregar seus jogos.", true);
         return;
     }
-    const acoes = { aoEditar: entrarModoEdicao, aoExcluir: aoExcluir };
-    lista.replaceChildren(...data.map((jogo) => criarCard(jogo, acoes)));
-    vazio.hidden = data.length > 0;
+    jogosCarregados = data;
+    atualizarOpcoesFiltros();
+    renderizarLista();
 }
 
 async function iniciar() {
@@ -183,7 +213,8 @@ async function iniciar() {
     }
 
     document.getElementById("usuario").textContent = sessao.user.email;
-    renderizarChips([]);
+    seletorGeneros.renderizar([]);
+    seletorPlataformas.renderizar([]);
 
     document.getElementById("btn-sair").addEventListener("click", async () => {
         await sair();
@@ -192,13 +223,23 @@ async function iniciar() {
 
     botaoCancelar.addEventListener("click", sairModoEdicao);
 
-    botaoGeneroOutro.addEventListener("click", adicionarGeneroPersonalizado);
-    campoGeneroOutro.addEventListener("keydown", (evento) => {
-        if (evento.key === "Enter") {
-            evento.preventDefault();
-            adicionarGeneroPersonalizado();
-        }
-    });
+    ligarCampoOutro(
+        document.getElementById("genero-outro"),
+        document.getElementById("btn-genero-outro"),
+        seletorGeneros
+    );
+    ligarCampoOutro(
+        document.getElementById("plataforma-outro"),
+        document.getElementById("btn-plataforma-outro"),
+        seletorPlataformas
+    );
+
+    campoBusca.addEventListener("input", renderizarLista);
+    filtroStatus.addEventListener("change", renderizarLista);
+    filtroPlataforma.addEventListener("change", renderizarLista);
+    filtroGenero.addEventListener("change", renderizarLista);
+    seletorOrdenacao.addEventListener("change", renderizarLista);
+    botaoLimpar.addEventListener("click", limparFiltros);
 
     form.addEventListener("submit", async (evento) => {
         evento.preventDefault();

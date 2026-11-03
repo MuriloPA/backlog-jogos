@@ -220,6 +220,37 @@ h1 {
     min-width: 0;
 }
 
+.filtros {
+    display: grid;
+    grid-template-columns: 2fr repeat(4, 1fr) auto;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
+}
+
+.filtros input,
+.filtros select {
+    width: 100%;
+    min-width: 0;
+    padding: 0.6rem;
+    border: 1px solid var(--borda);
+    border-radius: 6px;
+    background: var(--card);
+    color: var(--texto);
+    font-size: 0.9rem;
+    font-family: inherit;
+}
+
+.filtros button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+}
+
+.contador {
+    margin: 0 0 1rem;
+    font-size: 0.85rem;
+    color: var(--suave);
+}
+
 .grade {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -342,8 +373,22 @@ h1 {
     }
 }
 
+@media (max-width: 900px) {
+    .filtros {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .filtro-busca {
+        grid-column: 1 / -1;
+    }
+}
+
 @media (max-width: 600px) {
     .formulario-jogo {
+        grid-template-columns: 1fr;
+    }
+
+    .filtros {
         grid-template-columns: 1fr;
     }
 
