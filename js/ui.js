@@ -1,3 +1,5 @@
+import { separarLista } from "./filtros.js";
+
 const ROTULOS_STATUS = {
     fila: "Na fila",
     jogando: "Jogando",
@@ -20,6 +22,16 @@ function criarBotao(texto, classe, aoClicar) {
     return botao;
 }
 
+function criarLink(texto, classe, endereco) {
+    const link = criarElemento("a", classe, texto);
+    link.href = endereco;
+    return link;
+}
+
+function urlDetalhe(jogo) {
+    return "jogo.html?id=" + jogo.id;
+}
+
 function criarImagemCapa(jogo) {
     const capa = document.createElement("img");
     capa.className = "capa";
@@ -35,11 +47,49 @@ function formatarHoras(valor) {
     return String(Number(valor)).replace(".", ",") + " h";
 }
 
+function formatarData(valor) {
+    return new Date(valor).toLocaleDateString("pt-BR");
+}
+
+function criarEstrelas(nota) {
+    return "★".repeat(nota) + "☆".repeat(5 - nota);
+}
+
+function criarTags(texto, classeExtra) {
+    const itens = separarLista(texto);
+    if (itens.length === 0) return null;
+
+    const lista = criarElemento("div", "tags");
+    itens.forEach((item) => {
+        lista.appendChild(criarElemento("span", "tag " + classeExtra, item));
+    });
+    return lista;
+}
+
+function criarInfo(rotulo, valor) {
+    const bloco = criarElemento("div", "info");
+    bloco.appendChild(criarElemento("span", "info-rotulo", rotulo));
+
+    if (typeof valor === "string") {
+        bloco.appendChild(criarElemento("span", "info-valor", valor));
+    } else {
+        bloco.appendChild(valor);
+    }
+    return bloco;
+}
+
 export function criarCard(jogo, acoes) {
     const card = criarElemento("article", "card");
 
+    const linkCapa = criarElemento("a", "card-link");
+    linkCapa.href = urlDetalhe(jogo);
+    linkCapa.appendChild(criarImagemCapa(jogo));
+
     const corpo = criarElemento("div", "card-corpo");
-    corpo.appendChild(criarElemento("h3", "card-titulo", jogo.titulo));
+
+    const titulo = criarElemento("h3", "card-titulo");
+    titulo.appendChild(criarLink(jogo.titulo, "", urlDetalhe(jogo)));
+    corpo.appendChild(titulo);
 
     const detalhes = [jogo.plataforma, jogo.genero].filter(Boolean).join(" · ");
     if (detalhes) {
@@ -66,7 +116,7 @@ export function criarCard(jogo, acoes) {
         criarBotao("Excluir", "btn-secundario btn-pequeno btn-perigo", () => acoes.aoExcluir(jogo))
     );
 
-    card.appendChild(criarImagemCapa(jogo));
+    card.appendChild(linkCapa);
     card.appendChild(corpo);
     card.appendChild(rodape);
     return card;
@@ -102,4 +152,66 @@ export function criarResultadoSorteio(jogo, dados, aoComecar) {
     cartao.appendChild(criarImagemCapa(jogo));
     cartao.appendChild(corpo);
     return cartao;
+}
+
+export function criarDetalhe(jogo) {
+    const artigo = criarElemento("article", "detalhe");
+    artigo.appendChild(criarImagemCapa(jogo));
+
+    const corpo = criarElemento("div", "detalhe-corpo");
+    corpo.appendChild(criarElemento("h2", "detalhe-titulo", jogo.titulo));
+
+    const plataformas = criarTags(jogo.plataforma, "tag-plataforma");
+    if (plataformas) corpo.appendChild(plataformas);
+
+    const generos = criarTags(jogo.genero, "tag-genero");
+    if (generos) corpo.appendChild(generos);
+
+    const infos = criarElemento("div", "infos");
+    infos.appendChild(
+        criarInfo("Status", criarElemento("span", "badge status-" + jogo.status, ROTULOS_STATUS[jogo.status]))
+    );
+    infos.appendChild(
+        criarInfo("Nota", jogo.nota ? criarEstrelas(jogo.nota) + " " + jogo.nota + "/5" : "Sem nota")
+    );
+    infos.appendChild(criarInfo("Horas jogadas", formatarHoras(jogo.horas_jogadas)));
+    infos.appendChild(
+        criarInfo("Horas para zerar", jogo.horas_estimadas === null ? "Não informado" : formatarHoras(jogo.horas_estimadas))
+    );
+    infos.appendChild(criarInfo("Adicionado em", formatarData(jogo.criado_em)));
+    corpo.appendChild(infos);
+
+    if (jogo.horas_estimadas !== null) {
+        const percentual = Math.min(
+            100,
+            Math.round((Number(jogo.horas_jogadas) / Number(jogo.horas_estimadas)) * 100)
+        );
+
+        const progresso = criarElemento("div", "progresso");
+        progresso.appendChild(criarElemento("p", "progresso-texto", "Progresso: " + percentual + "%"));
+
+        const trilho = criarElemento("div", "barra-trilho");
+        const preenchimento = criarElemento("div", "barra-preenchimento");
+        preenchimento.style.width = percentual + "%";
+        trilho.appendChild(preenchimento);
+        progresso.appendChild(trilho);
+        corpo.appendChild(progresso);
+    }
+
+    const opiniao = criarElemento("div", "detalhe-secao");
+    opiniao.appendChild(criarElemento("h3", "detalhe-secao-titulo", "Opinião"));
+    opiniao.appendChild(
+        jogo.opiniao
+            ? criarElemento("p", "detalhe-opiniao", jogo.opiniao)
+            : criarElemento("p", "detalhe-opiniao opiniao-vazia", "Você ainda não escreveu uma opinião sobre este jogo.")
+    );
+    corpo.appendChild(opiniao);
+
+    const acoes = criarElemento("div", "linha-botoes");
+    acoes.appendChild(criarLink("Editar jogo", "btn-principal", "biblioteca.html?editar=" + jogo.id));
+    acoes.appendChild(criarLink("Voltar à biblioteca", "btn-secundario", "biblioteca.html"));
+    corpo.appendChild(acoes);
+
+    artigo.appendChild(corpo);
+    return artigo;
 }

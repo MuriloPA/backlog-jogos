@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo - PlayLog</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="topo">
+        <div class="topo-esquerda">
+            <span class="logo">PlayLog</span>
+            <nav class="menu">
+                <a href="biblioteca.html" aria-current="page">Biblioteca</a>
+                <a href="sorteio.html">Sorteio</a>
+                <a href="estatisticas.html">Estatísticas</a>
+            </nav>
+        </div>
+        <div>
+            <span id="usuario"></span>
+            <button id="btn-sair" class="btn-secundario">Sair</button>
+        </div>
+    </header>
+
+    <main class="conteudo">
+        <section id="detalhe"></section>
+
+        <div id="nao-encontrado" hidden>
+            <p class="vazio">Jogo não encontrado.</p>
+            <a class="btn-secundario" href="biblioteca.html">Voltar à biblioteca</a>
+        </div>
+    </main>
+
+    <script type="module" src="js/jogo-pagina.js"></script>
+</body>
+</html>

@@ -122,6 +122,21 @@ function sairModoEdicao() {
     botaoCancelar.hidden = true;
 }
 
+function abrirEdicaoPelaUrl() {
+    const bruto = new URLSearchParams(window.location.search).get("editar");
+    if (bruto === null) return;
+
+    window.history.replaceState(null, "", window.location.pathname);
+
+    const id = Number(bruto);
+    const jogo = jogosCarregados.find((item) => item.id === id);
+    if (!jogo) {
+        mostrarToast("Jogo não encontrado.", true);
+        return;
+    }
+    entrarModoEdicao(jogo);
+}
+
 function preencherSelect(select, opcoes, rotuloTodos) {
     const atual = select.value;
     select.replaceChildren();
@@ -270,6 +285,7 @@ async function iniciar() {
     });
 
     await carregarJogos();
+    abrirEdicaoPelaUrl();
 }
 
 iniciar();

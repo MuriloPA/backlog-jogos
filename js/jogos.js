@@ -7,6 +7,14 @@ export async function listarJogos() {
         .order("criado_em", { ascending: false });
 }
 
+export async function obterJogo(id) {
+    return await supabase
+        .from("jogos")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
+}
+
 export async function adicionarJogo(jogo) {
     return await supabase.from("jogos").insert(jogo);
 }
