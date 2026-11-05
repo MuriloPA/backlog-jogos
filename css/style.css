@@ -830,5 +830,6 @@ a.btn-secundario {
     .detalhe .capa {
         width: 100%;
         max-width: 260px;
+        align-self: center;
     }
 }
