@@ -51,6 +51,8 @@ h1 {
 .formulario select,
 .formulario textarea {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     padding: 0.7rem;
     border: 1px solid var(--borda);
     border-radius: 6px;
@@ -163,6 +165,7 @@ a.btn-secundario {
 #usuario {
     margin-right: 0.8rem;
     font-size: 0.9rem;
+    overflow-wrap: anywhere;
 }
 
 .conteudo {
@@ -186,7 +189,7 @@ a.btn-secundario {
 
 .formulario-jogo {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 1rem;
     margin-top: 1rem;
 }
@@ -195,6 +198,7 @@ a.btn-secundario {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
+    min-width: 0;
 }
 
 .campo-largo {
@@ -255,6 +259,10 @@ a.btn-secundario {
     margin-top: 0.6rem;
 }
 
+.linha-outro button {
+    flex-shrink: 0;
+}
+
 .formulario .linha-outro input {
     flex: 1;
     width: auto;
@@ -263,7 +271,7 @@ a.btn-secundario {
 
 .filtros {
     display: grid;
-    grid-template-columns: 2fr repeat(4, 1fr) auto;
+    grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr)) auto;
     gap: 0.6rem;
     margin-bottom: 0.8rem;
 }
@@ -302,6 +310,7 @@ a.btn-secundario {
 .card {
     display: flex;
     flex-direction: column;
+    min-width: 0;
     background: var(--card);
     border: 1px solid var(--borda);
     border-radius: 8px;
@@ -328,6 +337,7 @@ a.btn-secundario {
 .card-titulo {
     margin: 0 0 0.4rem;
     font-size: 1rem;
+    overflow-wrap: anywhere;
 }
 
 .card-titulo a {
@@ -343,6 +353,7 @@ a.btn-secundario {
     margin: 0.3rem 0;
     font-size: 0.85rem;
     color: var(--suave);
+    overflow-wrap: anywhere;
 }
 
 .card-acoes {
@@ -381,7 +392,7 @@ a.btn-secundario {
 
 .sorteio-form {
     display: grid;
-    grid-template-columns: 1fr 1fr auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
     gap: 0.8rem;
     align-items: end;
     margin: 1.2rem 0 0.8rem;
@@ -414,6 +425,7 @@ a.btn-secundario {
     flex-direction: column;
     justify-content: center;
     gap: 0.3rem;
+    min-width: 0;
     padding: 1.2rem;
 }
 
@@ -426,6 +438,7 @@ a.btn-secundario {
 .resultado-titulo {
     margin: 0 0 0.3rem;
     font-size: 1.6rem;
+    overflow-wrap: anywhere;
 }
 
 .resultado-corpo .btn-principal {
@@ -441,6 +454,7 @@ a.btn-secundario {
 }
 
 .indicador {
+    min-width: 0;
     background: var(--card);
     border: 1px solid var(--borda);
     border-radius: 8px;
@@ -467,11 +481,12 @@ a.btn-secundario {
 
 .graficos {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 1rem;
 }
 
 .grafico {
+    min-width: 0;
     background: var(--card);
     border: 1px solid var(--borda);
     border-radius: 8px;
@@ -577,7 +592,7 @@ a.btn-secundario {
 
 .barra-linha {
     display: grid;
-    grid-template-columns: 110px 1fr 28px;
+    grid-template-columns: 110px minmax(0, 1fr) 28px;
     gap: 0.6rem;
     align-items: center;
     font-size: 0.85rem;
@@ -640,6 +655,7 @@ a.btn-secundario {
 .detalhe-titulo {
     margin: 0;
     font-size: 1.8rem;
+    overflow-wrap: anywhere;
 }
 
 .tags {
@@ -756,7 +772,7 @@ a.btn-secundario {
 
 @media (max-width: 900px) {
     .filtros {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .filtro-busca {
@@ -764,7 +780,7 @@ a.btn-secundario {
     }
 
     .sorteio-form {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .sorteio-form button {
@@ -772,25 +788,25 @@ a.btn-secundario {
     }
 
     .graficos {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
 @media (max-width: 600px) {
     .formulario-jogo {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .filtros {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .grade {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .sorteio-form {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .resultado-card {
