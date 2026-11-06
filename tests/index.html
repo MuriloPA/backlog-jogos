@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testes - PlayLog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .resumo {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .linha {
+            margin: 0.3rem 0;
+            font-size: 0.95rem;
+            overflow-wrap: anywhere;
+        }
+
+        .ok {
+            color: #55efc4;
+        }
+
+        .erro {
+            color: #ff7675;
+        }
+
+        #resultados h2 {
+            margin: 1.5rem 0 0.5rem;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <main class="conteudo">
+        <h1>Testes automáticos</h1>
+        <p class="vazio">Regras de filtro, sorteio e estatísticas executadas no navegador, com dados fixos. Nenhum dado do banco é usado.</p>
+        <p id="resumo" class="resumo"></p>
+        <section id="resultados"></section>
+    </main>
+
+    <script type="module" src="testes.js"></script>
+</body>
+</html>
