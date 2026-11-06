@@ -5,9 +5,19 @@ import { mostrarToast } from "./toast.js";
 import { GENEROS } from "./generos.js";
 import { PLATAFORMAS } from "./plataformas.js";
 import { criarSeletorChips } from "./chips.js";
-import { separarLista, filtrarJogos, ordenarJogos, listarOpcoes } from "./filtros.js";
+import { separarLista, normalizar, filtrarJogos, ordenarJogos, listarOpcoes } from "./filtros.js";
+import { descreverErro } from "./erros.js";
+
+const LIMITE_TITULO = 120;
+const LIMITE_URL = 500;
+const LIMITE_OPINIAO = 500;
+const LIMITE_HORAS = 10000;
 
 const lista = document.getElementById("lista-jogos");
+const carregando = document.getElementById("carregando");
+const erroCarregar = document.getElementById("erro-carregar");
+const textoErro = document.getElementById("texto-erro");
+const botaoRecarregar = document.getElementById("btn-recarregar");
 const vazio = document.getElementById("vazio");
 const semResultados = document.getElementById("sem-resultados");
 const contador = document.getElementById("contador");
@@ -29,6 +39,16 @@ const seletorPlataformas = criarSeletorChips(document.getElementById("plataforma
 
 let idEmEdicao = null;
 let jogosCarregados = [];
+let jaCarregou = false;
+
+function urlValida(texto) {
+    try {
+        const url = new URL(texto);
+        return url.protocol === "http:" || url.protocol === "https:";
+    } catch (erro) {
+        return false;
+    }
+}
 
 function ligarCampoOutro(campo, botao, seletor) {
     function adicionar() {
@@ -53,27 +73,48 @@ function lerFormulario() {
     const dados = new FormData(form);
     const texto = (nome) => (dados.get(nome) || "").toString().trim();
 
-    const titulo = texto("titulo");
+    const titulo = texto("titulo").replace(/\s+/g, " ");
     if (!titulo) {
         return { erro: "Informe o título do jogo." };
     }
+    if (titulo.length > LIMITE_TITULO) {
+        return { erro: "O título deve ter no máximo " + LIMITE_TITULO + " caracteres." };
+    }
 
     const capa = texto("capa_url");
-    if (capa && !/^https?:\/\//i.test(capa)) {
-        return { erro: "O link da capa deve começar com http:// ou https://." };
+    if (capa && capa.length > LIMITE_URL) {
+        return { erro: "O link da capa é longo demais (máximo de " + LIMITE_URL + " caracteres)." };
+    }
+    if (capa && !urlValida(capa)) {
+        return { erro: "O link da capa não é válido. Use um endereço que comece com http:// ou https://." };
     }
 
     const horasJogadas = texto("horas_jogadas") === "" ? 0 : Number(texto("horas_jogadas"));
     if (Number.isNaN(horasJogadas) || horasJogadas < 0) {
         return { erro: "As horas jogadas devem ser 0 ou mais." };
     }
+    if (horasJogadas > LIMITE_HORAS) {
+        return { erro: "As horas jogadas devem ser no máximo " + LIMITE_HORAS + "." };
+    }
 
     const horasEstimadas = texto("horas_estimadas") === "" ? null : Number(texto("horas_estimadas"));
     if (horasEstimadas !== null && (Number.isNaN(horasEstimadas) || horasEstimadas <= 0)) {
         return { erro: "As horas estimadas devem ser maiores que 0." };
     }
+    if (horasEstimadas !== null && horasEstimadas > LIMITE_HORAS) {
+        return { erro: "As horas estimadas devem ser no máximo " + LIMITE_HORAS + "." };
+    }
 
     const nota = texto("nota") === "" ? null : Number(texto("nota"));
+    if (nota !== null && (!Number.isInteger(nota) || nota < 1 || nota > 5)) {
+        return { erro: "A nota deve ser um número de 1 a 5." };
+    }
+
+    const opiniao = texto("opiniao");
+    if (opiniao.length > LIMITE_OPINIAO) {
+        return { erro: "A opinião deve ter no máximo " + LIMITE_OPINIAO + " caracteres." };
+    }
+
     const generos = dados.getAll("genero");
     const plataformas = dados.getAll("plataforma");
 
@@ -87,9 +128,14 @@ function lerFormulario() {
             nota: nota,
             horas_jogadas: horasJogadas,
             horas_estimadas: horasEstimadas,
-            opiniao: texto("opiniao") || null
+            opiniao: opiniao || null
         }
     };
+}
+
+function tituloJaExiste(titulo) {
+    const alvo = normalizar(titulo);
+    return jogosCarregados.some((jogo) => jogo.id !== idEmEdicao && normalizar(jogo.titulo) === alvo);
 }
 
 function entrarModoEdicao(jogo) {
@@ -200,7 +246,7 @@ async function aoExcluir(jogo) {
 
     const { error } = await excluirJogo(jogo.id);
     if (error) {
-        mostrarToast("Não foi possível excluir o jogo.", true);
+        mostrarToast(descreverErro(error, "Não foi possível excluir o jogo."), true);
         return;
     }
 
@@ -211,10 +257,21 @@ async function aoExcluir(jogo) {
 
 async function carregarJogos() {
     const { data, error } = await listarJogos();
+    carregando.hidden = true;
+
     if (error) {
-        mostrarToast("Não foi possível carregar seus jogos.", true);
+        const mensagem = descreverErro(error, "Não foi possível carregar seus jogos.");
+        if (jaCarregou) {
+            mostrarToast(mensagem, true);
+            return;
+        }
+        textoErro.textContent = mensagem;
+        erroCarregar.hidden = false;
         return;
     }
+
+    jaCarregou = true;
+    erroCarregar.hidden = true;
     jogosCarregados = data;
     atualizarOpcoesFiltros();
     renderizarLista();
@@ -237,6 +294,13 @@ async function iniciar() {
     });
 
     botaoCancelar.addEventListener("click", sairModoEdicao);
+
+    botaoRecarregar.addEventListener("click", async () => {
+        erroCarregar.hidden = true;
+        carregando.hidden = false;
+        await carregarJogos();
+        if (jaCarregou) abrirEdicaoPelaUrl();
+    });
 
     ligarCampoOutro(
         document.getElementById("genero-outro"),
@@ -265,6 +329,11 @@ async function iniciar() {
             return;
         }
 
+        if (tituloJaExiste(resultado.jogo.titulo)) {
+            mostrarToast('Você já tem "' + resultado.jogo.titulo + '" na biblioteca.', true);
+            return;
+        }
+
         const emEdicao = idEmEdicao !== null;
 
         botaoSalvar.disabled = true;
@@ -274,8 +343,8 @@ async function iniciar() {
         botaoSalvar.disabled = false;
 
         if (error) {
-            const acao = emEdicao ? "atualizar" : "salvar";
-            mostrarToast("Não foi possível " + acao + " o jogo. Tente novamente.", true);
+            const padrao = "Não foi possível " + (emEdicao ? "atualizar" : "salvar") + " o jogo. Tente novamente.";
+            mostrarToast(descreverErro(error, padrao), true);
             return;
         }
 
@@ -285,7 +354,7 @@ async function iniciar() {
     });
 
     await carregarJogos();
-    abrirEdicaoPelaUrl();
+    if (jaCarregou) abrirEdicaoPelaUrl();
 }
 
 iniciar();
