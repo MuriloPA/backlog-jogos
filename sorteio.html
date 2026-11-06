@@ -49,7 +49,13 @@
             <button type="button" id="btn-sortear" class="btn-principal" disabled>Sortear</button>
         </section>
 
-        <p id="resumo-sorteio" class="contador"></p>
+        <p id="resumo-sorteio" class="contador">Carregando seus jogos...</p>
+
+        <div id="erro-carregar" hidden>
+            <p id="texto-erro" class="vazio"></p>
+            <button type="button" id="btn-recarregar" class="btn-secundario">Tentar novamente</button>
+        </div>
+
         <section id="resultado"></section>
     </main>
 

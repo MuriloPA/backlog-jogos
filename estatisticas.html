@@ -25,6 +25,13 @@
     <main class="conteudo">
         <h2>Estatísticas</h2>
 
+        <p id="carregando" class="vazio">Carregando suas estatísticas...</p>
+
+        <div id="erro-carregar" hidden>
+            <p id="texto-erro" class="vazio"></p>
+            <button type="button" id="btn-recarregar" class="btn-secundario">Tentar novamente</button>
+        </div>
+
         <p id="vazio-stats" class="vazio" hidden>Adicione jogos na biblioteca para ver suas estatísticas.</p>
 
         <div id="painel-stats" hidden>

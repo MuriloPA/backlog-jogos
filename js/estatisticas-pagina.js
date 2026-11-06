@@ -1,13 +1,17 @@
 import { obterSessao, sair } from "./auth.js";
 import { listarJogos } from "./jogos.js";
-import { mostrarToast } from "./toast.js";
 import { calcularResumo, contarGeneros, formatarNumero } from "./stats.js";
 import { criarIndicador, criarRosca, criarBarras } from "./graficos.js";
+import { descreverErro } from "./erros.js";
 
 const LIMITE_GENEROS = 8;
 
 const painel = document.getElementById("painel-stats");
 const vazio = document.getElementById("vazio-stats");
+const carregando = document.getElementById("carregando");
+const erroCarregar = document.getElementById("erro-carregar");
+const textoErro = document.getElementById("texto-erro");
+const botaoRecarregar = document.getElementById("btn-recarregar");
 const areaIndicadores = document.getElementById("indicadores");
 const areaStatus = document.getElementById("grafico-status");
 const areaGeneros = document.getElementById("grafico-generos");
@@ -91,10 +95,15 @@ function renderizarGeneros(jogos) {
 
 async function carregar() {
     const { data, error } = await listarJogos();
+    carregando.hidden = true;
+
     if (error) {
-        mostrarToast("Não foi possível carregar seus jogos.", true);
+        textoErro.textContent = descreverErro(error, "Não foi possível carregar seus jogos.");
+        erroCarregar.hidden = false;
         return;
     }
+
+    erroCarregar.hidden = true;
 
     if (data.length === 0) {
         painel.hidden = true;
@@ -123,6 +132,12 @@ async function iniciar() {
     document.getElementById("btn-sair").addEventListener("click", async () => {
         await sair();
         window.location.href = "index.html";
+    });
+
+    botaoRecarregar.addEventListener("click", async () => {
+        erroCarregar.hidden = true;
+        carregando.hidden = false;
+        await carregar();
     });
 
     await carregar();

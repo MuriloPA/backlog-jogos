@@ -4,15 +4,20 @@ import { criarResultadoSorteio } from "./ui.js";
 import { mostrarToast } from "./toast.js";
 import { separarLista, listarOpcoes } from "./filtros.js";
 import { selecionarElegiveis, sortear, chanceDe, diasNaFila, tempoRestante } from "./sorteio.js";
+import { descreverErro } from "./erros.js";
 
 const campoTempo = document.getElementById("tempo");
 const campoGenero = document.getElementById("genero-sorteio");
 const botaoSortear = document.getElementById("btn-sortear");
 const resumo = document.getElementById("resumo-sorteio");
 const areaResultado = document.getElementById("resultado");
+const erroCarregar = document.getElementById("erro-carregar");
+const textoErro = document.getElementById("texto-erro");
+const botaoRecarregar = document.getElementById("btn-recarregar");
 
 let jogosCarregados = [];
 let ultimoSorteado = null;
+let jaCarregou = false;
 
 function lerCriterios() {
     return {
@@ -75,7 +80,7 @@ function aoMudarCriterios() {
 async function comecarAJogar(jogo) {
     const { error } = await atualizarJogo(jogo.id, { status: "jogando" });
     if (error) {
-        mostrarToast("Não foi possível atualizar o jogo.", true);
+        mostrarToast(descreverErro(error, "Não foi possível atualizar o jogo."), true);
         return;
     }
 
@@ -110,9 +115,19 @@ function executarSorteio() {
 async function carregarJogos() {
     const { data, error } = await listarJogos();
     if (error) {
-        mostrarToast("Não foi possível carregar seus jogos.", true);
+        const mensagem = descreverErro(error, "Não foi possível carregar seus jogos.");
+        if (jaCarregou) {
+            mostrarToast(mensagem, true);
+            return;
+        }
+        resumo.textContent = "";
+        textoErro.textContent = mensagem;
+        erroCarregar.hidden = false;
         return;
     }
+
+    jaCarregou = true;
+    erroCarregar.hidden = true;
     jogosCarregados = data;
     atualizarGeneros();
     atualizarResumo();
@@ -135,6 +150,12 @@ async function iniciar() {
     campoTempo.addEventListener("change", aoMudarCriterios);
     campoGenero.addEventListener("change", aoMudarCriterios);
     botaoSortear.addEventListener("click", executarSorteio);
+
+    botaoRecarregar.addEventListener("click", async () => {
+        erroCarregar.hidden = true;
+        resumo.textContent = "Carregando seus jogos...";
+        await carregarJogos();
+    });
 
     await carregarJogos();
 }
