@@ -1,11 +1,16 @@
 :root {
-    --fundo: #12141c;
-    --card: #1c1f2b;
-    --texto: #e8eaf2;
-    --destaque: #6c5ce7;
-    --borda: #343850;
-    --suave: #9aa0b8;
-    --perigo: #ff7675;
+    --fundo: #0d0618;
+    --card: #1a0f33;
+    --card-claro: #261848;
+    --texto: #f3eeff;
+    --destaque: #ff3d9a;
+    --borda: #3b2766;
+    --suave: #a99bd1;
+    --perigo: #ff6b6b;
+    --ciano: #5ee7ff;
+    --amarelo: #ffd166;
+    --verde: #5dffb0;
+    --brilho: rgba(255, 61, 154, 0.45);
 }
 
 * {
@@ -25,6 +30,7 @@ body {
 
 h1 {
     color: var(--destaque);
+    text-shadow: 0 0 18px var(--brilho);
 }
 
 .login {
@@ -81,6 +87,13 @@ a.btn-secundario {
     background: var(--destaque);
     color: #fff;
     border: none;
+    font-weight: bold;
+    box-shadow: 0 0 14px var(--brilho);
+}
+
+.btn-principal:hover:not(:disabled) {
+    box-shadow: 0 0 22px var(--brilho);
+    filter: brightness(1.1);
 }
 
 .btn-principal:disabled {
@@ -115,7 +128,7 @@ a.btn-secundario {
 }
 
 .mensagem.ok {
-    color: #55efc4;
+    color: var(--verde);
 }
 
 .topo {
@@ -124,14 +137,53 @@ a.btn-secundario {
     gap: 0.6rem;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.5rem;
+    padding: 0.8rem 1.5rem;
     background: var(--card);
+    border-bottom: 1px solid var(--borda);
 }
 
-.topo .logo {
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--texto);
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+}
+
+.logo img {
+    display: block;
+    height: 30px;
+    width: auto;
+}
+
+.logo b,
+.marca-grande b {
     color: var(--destaque);
-    font-weight: bold;
-    font-size: 1.2rem;
+}
+
+.marca-grande {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    color: var(--texto);
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-shadow: none;
+}
+
+.marca-grande img {
+    display: block;
+    height: 48px;
+    width: auto;
+}
+
+.marca-grande b {
+    text-shadow: 0 0 18px var(--brilho);
 }
 
 .topo-esquerda {
@@ -315,6 +367,12 @@ a.btn-secundario {
     border: 1px solid var(--borda);
     border-radius: 8px;
     overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    border-color: var(--destaque);
+    box-shadow: 0 0 16px var(--brilho);
 }
 
 .card-link {
@@ -326,7 +384,7 @@ a.btn-secundario {
     width: 100%;
     aspect-ratio: 3 / 4;
     object-fit: cover;
-    background: #252a3a;
+    background: var(--card-claro);
 }
 
 .card-corpo {
@@ -372,18 +430,18 @@ a.btn-secundario {
 }
 
 .status-fila {
-    background: #2d3250;
-    color: #a5b4fc;
+    background: color-mix(in srgb, var(--ciano) 18%, var(--card));
+    color: var(--ciano);
 }
 
 .status-jogando {
-    background: #4a3b12;
-    color: #fdcb6e;
+    background: color-mix(in srgb, var(--amarelo) 18%, var(--card));
+    color: var(--amarelo);
 }
 
 .status-zerado {
-    background: #134a38;
-    color: #55efc4;
+    background: color-mix(in srgb, var(--verde) 18%, var(--card));
+    color: var(--verde);
 }
 
 .vazio {
@@ -413,6 +471,7 @@ a.btn-secundario {
     border-radius: 8px;
     overflow: hidden;
     margin-top: 1rem;
+    box-shadow: 0 0 20px var(--brilho);
 }
 
 .resultado-card .capa {
@@ -522,15 +581,15 @@ a.btn-secundario {
 }
 
 .arco-fila {
-    stroke: #a5b4fc;
+    stroke: var(--ciano);
 }
 
 .arco-jogando {
-    stroke: #fdcb6e;
+    stroke: var(--amarelo);
 }
 
 .arco-zerado {
-    stroke: #55efc4;
+    stroke: var(--verde);
 }
 
 .rosca-total {
@@ -570,15 +629,15 @@ a.btn-secundario {
 }
 
 .ponto-fila {
-    background: #a5b4fc;
+    background: var(--ciano);
 }
 
 .ponto-jogando {
-    background: #fdcb6e;
+    background: var(--amarelo);
 }
 
 .ponto-zerado {
-    background: #55efc4;
+    background: var(--verde);
 }
 
 .barras {
@@ -606,7 +665,7 @@ a.btn-secundario {
 
 .barra-trilho {
     height: 0.8rem;
-    background: #252a3a;
+    background: var(--card-claro);
     border-radius: 999px;
     overflow: hidden;
 }
@@ -674,7 +733,7 @@ a.btn-secundario {
 
 .tag-plataforma {
     border-color: var(--destaque);
-    color: #c9c2ff;
+    color: #ffb3d9;
 }
 
 .infos {
