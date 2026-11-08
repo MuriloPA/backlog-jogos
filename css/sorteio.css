@@ -1,0 +1,27 @@
+.resultado-card {
+    animation: resultado-entrar 0.35s ease-out;
+}
+
+.roleta {
+    animation: roleta-pulso 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes roleta-pulso {
+    from {
+        box-shadow: 0 0 12px var(--brilho);
+    }
+    to {
+        box-shadow: 0 0 34px var(--brilho);
+    }
+}
+
+@keyframes resultado-entrar {
+    from {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

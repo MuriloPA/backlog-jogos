@@ -5,6 +5,7 @@ import { mostrarToast } from "./toast.js";
 import { separarLista, listarOpcoes } from "./filtros.js";
 import { selecionarElegiveis, sortear, chanceDe, diasNaFila, tempoRestante } from "./sorteio.js";
 import { descreverErro } from "./erros.js";
+import { girarRoleta } from "./roleta.js";
 
 const campoTempo = document.getElementById("tempo");
 const campoGenero = document.getElementById("genero-sorteio");
@@ -18,6 +19,7 @@ const botaoRecarregar = document.getElementById("btn-recarregar");
 let jogosCarregados = [];
 let ultimoSorteado = null;
 let jaCarregou = false;
+let sorteando = false;
 
 function lerCriterios() {
     return {
@@ -89,7 +91,16 @@ async function comecarAJogar(jogo) {
     await carregarJogos();
 }
 
-function executarSorteio() {
+function definirSorteando(ativo) {
+    sorteando = ativo;
+    botaoSortear.disabled = ativo;
+    campoTempo.disabled = ativo;
+    campoGenero.disabled = ativo;
+}
+
+async function executarSorteio() {
+    if (sorteando) return;
+
     const { candidatos } = selecionarElegiveis(jogosCarregados, lerCriterios());
 
     let grupo = candidatos;
@@ -102,13 +113,21 @@ function executarSorteio() {
     if (!jogo) return;
 
     ultimoSorteado = jogo;
-    botaoSortear.textContent = "Sortear outro";
 
     const dados = {
         dias: diasNaFila(jogo, agora),
         restante: tempoRestante(jogo),
         chance: chanceDe(jogo, grupo, agora)
     };
+
+    definirSorteando(true);
+    try {
+        await girarRoleta(areaResultado, grupo, jogo);
+    } finally {
+        definirSorteando(false);
+    }
+
+    botaoSortear.textContent = "Sortear outro";
     areaResultado.replaceChildren(criarResultadoSorteio(jogo, dados, () => comecarAJogar(jogo)));
 }
 
