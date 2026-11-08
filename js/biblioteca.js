@@ -7,6 +7,7 @@ import { PLATAFORMAS } from "./plataformas.js";
 import { criarSeletorChips } from "./chips.js";
 import { separarLista, normalizar, filtrarJogos, ordenarJogos, listarOpcoes } from "./filtros.js";
 import { descreverErro } from "./erros.js";
+import { confirmar } from "./confirmar.js";
 
 const LIMITE_TITULO = 120;
 const LIMITE_URL = 500;
@@ -241,7 +242,12 @@ function limparFiltros() {
 }
 
 async function aoExcluir(jogo) {
-    const confirmou = window.confirm('Excluir "' + jogo.titulo + '"? Esta ação não pode ser desfeita.');
+    const confirmou = await confirmar({
+        titulo: "Excluir jogo?",
+        mensagem: '"' + jogo.titulo + '" será removido da sua biblioteca. Esta ação não pode ser desfeita.',
+        textoConfirmar: "Excluir",
+        perigo: true
+    });
     if (!confirmou) return;
 
     const { error } = await excluirJogo(jogo.id);

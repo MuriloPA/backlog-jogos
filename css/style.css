@@ -7,9 +7,10 @@
     --borda: #3b2766;
     --suave: #a99bd1;
     --perigo: #ff6b6b;
-    --ciano: #5ee7ff;
-    --amarelo: #ffd166;
-    --verde: #5dffb0;
+    --status-fila: #6ea8ff;
+    --status-jogando: #ffb020;
+    --status-zerado: #4ade80;
+    --sucesso: #4ade80;
     --brilho: rgba(255, 61, 154, 0.45);
 }
 
@@ -33,11 +34,169 @@ h1 {
     text-shadow: 0 0 18px var(--brilho);
 }
 
-.login {
-    max-width: 420px;
-    margin: 4rem auto;
-    padding: 0 1rem;
-    text-align: center;
+.pagina-login {
+    min-height: 100vh;
+    background-color: var(--fundo);
+    background-image:
+        radial-gradient(circle at 12% 18%, rgba(255, 61, 154, 0.2), transparent 38%),
+        radial-gradient(circle at 88% 82%, rgba(110, 168, 255, 0.16), transparent 42%),
+        linear-gradient(rgba(243, 238, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(243, 238, 255, 0.04) 1px, transparent 1px);
+    background-size: auto, auto, 40px 40px, 40px 40px;
+}
+
+.login-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 3rem;
+    align-items: center;
+    max-width: 1100px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.login-hero .marca-grande {
+    justify-content: flex-start;
+    margin: 0 0 1.5rem;
+    font-size: 2.8rem;
+}
+
+.login-lema {
+    margin: 0 0 0.6rem;
+    font-size: 1.7rem;
+    font-weight: bold;
+    line-height: 1.25;
+}
+
+.login-sub {
+    margin: 0 0 2rem;
+    color: var(--suave);
+    line-height: 1.5;
+}
+
+.login-destaques {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.login-destaques li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+}
+
+.destaque-icone {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    background: var(--card);
+    color: var(--destaque);
+}
+
+.destaque-icone svg {
+    width: 1.4rem;
+    height: 1.4rem;
+}
+
+.destaque-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.destaque-texto span {
+    font-size: 0.9rem;
+    color: var(--suave);
+}
+
+.login-vitrine {
+    display: flex;
+    gap: 0.9rem;
+    margin-top: 2.2rem;
+}
+
+.mini-card {
+    width: 112px;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--card);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+}
+
+.mini-card:nth-child(1) {
+    transform: rotate(-4deg);
+}
+
+.mini-card:nth-child(2) {
+    transform: translateY(-10px) rotate(2deg);
+}
+
+.mini-card:nth-child(3) {
+    transform: rotate(-2deg);
+}
+
+.mini-capa {
+    aspect-ratio: 3 / 4;
+}
+
+.mini-capa-1 {
+    background: linear-gradient(160deg, #ff3d9a, #3b1a7a);
+}
+
+.mini-capa-2 {
+    background: linear-gradient(160deg, #6ea8ff, #1b2a6b);
+}
+
+.mini-capa-3 {
+    background: linear-gradient(160deg, #4ade80, #0f4a3a);
+}
+
+.mini-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.mini-info .badge {
+    align-self: flex-start;
+    margin: 0;
+    font-size: 0.65rem;
+}
+
+.login-cartao {
+    padding: 2rem;
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    background: var(--card);
+    box-shadow: 0 0 40px rgba(255, 61, 154, 0.15);
+}
+
+.login-cartao h2 {
+    margin: 0 0 0.3rem;
+    font-size: 1.5rem;
+}
+
+.login-cartao p {
+    margin: 0;
+    color: var(--suave);
+}
+
+.login-cartao .formulario {
+    margin-top: 1.4rem;
 }
 
 .formulario {
@@ -128,7 +287,7 @@ a.btn-secundario {
 }
 
 .mensagem.ok {
-    color: var(--verde);
+    color: var(--sucesso);
 }
 
 .topo {
@@ -430,18 +589,18 @@ a.btn-secundario {
 }
 
 .status-fila {
-    background: color-mix(in srgb, var(--ciano) 18%, var(--card));
-    color: var(--ciano);
+    background: color-mix(in srgb, var(--status-fila) 18%, var(--card));
+    color: var(--status-fila);
 }
 
 .status-jogando {
-    background: color-mix(in srgb, var(--amarelo) 18%, var(--card));
-    color: var(--amarelo);
+    background: color-mix(in srgb, var(--status-jogando) 18%, var(--card));
+    color: var(--status-jogando);
 }
 
 .status-zerado {
-    background: color-mix(in srgb, var(--verde) 18%, var(--card));
-    color: var(--verde);
+    background: color-mix(in srgb, var(--status-zerado) 18%, var(--card));
+    color: var(--status-zerado);
 }
 
 .vazio {
@@ -581,15 +740,15 @@ a.btn-secundario {
 }
 
 .arco-fila {
-    stroke: var(--ciano);
+    stroke: var(--status-fila);
 }
 
 .arco-jogando {
-    stroke: var(--amarelo);
+    stroke: var(--status-jogando);
 }
 
 .arco-zerado {
-    stroke: var(--verde);
+    stroke: var(--status-zerado);
 }
 
 .rosca-total {
@@ -629,15 +788,15 @@ a.btn-secundario {
 }
 
 .ponto-fila {
-    background: var(--ciano);
+    background: var(--status-fila);
 }
 
 .ponto-jogando {
-    background: var(--amarelo);
+    background: var(--status-jogando);
 }
 
 .ponto-zerado {
-    background: var(--verde);
+    background: var(--status-zerado);
 }
 
 .barras {
@@ -829,6 +988,92 @@ a.btn-secundario {
     }
 }
 
+.dialogo {
+    width: min(92vw, 400px);
+    padding: 0;
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    background: var(--card);
+    color: var(--texto);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.7);
+}
+
+.dialogo[open] {
+    animation: dialogo-entrar 0.2s ease-out;
+}
+
+.dialogo::backdrop {
+    background: rgba(8, 3, 16, 0.78);
+    backdrop-filter: blur(3px);
+}
+
+.dialogo-perigo {
+    border-color: var(--perigo);
+    box-shadow: 0 0 40px rgba(255, 107, 107, 0.25);
+}
+
+.dialogo-caixa {
+    padding: 1.6rem;
+    text-align: center;
+}
+
+.dialogo-icone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    margin: 0 auto 1rem;
+    border: 2px solid var(--destaque);
+    border-radius: 50%;
+    color: var(--destaque);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.dialogo-perigo .dialogo-icone {
+    border-color: var(--perigo);
+    color: var(--perigo);
+}
+
+.dialogo-titulo {
+    margin: 0 0 0.5rem;
+    font-size: 1.3rem;
+}
+
+.dialogo-mensagem {
+    margin: 0 0 1.4rem;
+    color: var(--suave);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.dialogo-botoes {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.dialogo-botoes button {
+    flex: 1;
+}
+
+.btn-confirmar-perigo {
+    background: var(--perigo);
+    color: #1a0626;
+    box-shadow: 0 0 14px rgba(255, 107, 107, 0.4);
+}
+
+@keyframes dialogo-entrar {
+    from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 @media (max-width: 900px) {
     .filtros {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -848,6 +1093,42 @@ a.btn-secundario {
 
     .graficos {
         grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+    .login-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.5rem;
+        min-height: 0;
+        padding: 2rem 1rem;
+    }
+
+    .login-hero .marca-grande {
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 2.2rem;
+    }
+
+    .login-hero {
+        text-align: center;
+    }
+
+    .login-lema {
+        font-size: 1.3rem;
+    }
+
+    .login-sub {
+        margin-bottom: 0;
+    }
+
+    .login-destaques,
+    .login-vitrine {
+        display: none;
+    }
+
+    .login-cartao {
+        padding: 1.4rem;
     }
 }
 

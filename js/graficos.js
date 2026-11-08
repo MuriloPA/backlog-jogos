@@ -1,6 +1,7 @@
 const NS = "http://www.w3.org/2000/svg";
 const RAIO = 40;
 const CIRCUNFERENCIA = 2 * Math.PI * RAIO;
+const FOLGA_ENTRE_ARCOS = 2;
 
 function criarElemento(tag, classe, texto) {
     const elemento = document.createElement(tag);
@@ -43,6 +44,9 @@ export function criarRosca(itens) {
         class: "rosca-fundo"
     }));
 
+    const arcosVisiveis = itens.filter((item) => item.valor > 0).length;
+    const folga = arcosVisiveis > 1 ? FOLGA_ENTRE_ARCOS : 0;
+
     let acumulado = 0;
     itens.forEach((item) => {
         if (item.valor === 0) return;
@@ -53,7 +57,7 @@ export function criarRosca(itens) {
             cy: "50",
             r: String(RAIO),
             class: "rosca-arco arco-" + item.chave,
-            "stroke-dasharray": comprimento + " " + (CIRCUNFERENCIA - comprimento),
+            "stroke-dasharray": (comprimento - folga) + " " + (CIRCUNFERENCIA - comprimento + folga),
             "stroke-dashoffset": String(-acumulado),
             transform: "rotate(-90 50 50)"
         }));
