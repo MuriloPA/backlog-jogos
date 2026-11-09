@@ -8,8 +8,6 @@ Projeto da disciplina **Tópicos Integradores**, do curso de Análise e Desenvol
 
 **Site publicado:** https://murilopa.github.io/backlog-jogos/
 
-**Conta de demonstração:** `demo@playlog.com` (a senha é informada na apresentação).
-
 ## O problema
 
 Quem joga costuma acumular uma pilha de jogos e, na hora de escolher, não sabe por onde começar. O PlayLog junta tudo em um só lugar e ajuda a decidir o que jogar a seguir.
