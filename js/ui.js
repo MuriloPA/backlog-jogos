@@ -6,8 +6,6 @@ const ROTULOS_STATUS = {
     zerado: "Zerado"
 };
 
-const CAPA_PADRAO = "assets/capa-padrao.svg";
-
 function criarElemento(tag, classe, texto) {
     const elemento = document.createElement(tag);
     if (classe) elemento.className = classe;
@@ -32,13 +30,41 @@ function urlDetalhe(jogo) {
     return "jogo.html?id=" + jogo.id;
 }
 
+function calcularMatiz(titulo) {
+    let valor = 0;
+    for (const letra of titulo) {
+        valor = (valor * 31 + letra.codePointAt(0)) % 1000003;
+    }
+    return 200 + (valor % 160);
+}
+
+function primeiraLetra(titulo) {
+    const letras = Array.from(titulo.trim());
+    return letras.length > 0 ? letras[0].toUpperCase() : "?";
+}
+
+function criarCapaPadrao(jogo) {
+    const capa = criarElemento("div", "capa capa-vazia");
+    capa.setAttribute("role", "img");
+    capa.setAttribute("aria-label", "Capa de " + jogo.titulo);
+
+    const matiz = calcularMatiz(jogo.titulo);
+    capa.style.background =
+        "linear-gradient(160deg, hsl(" + matiz + ", 70%, 46%), hsl(" + matiz + ", 60%, 16%))";
+
+    capa.appendChild(criarElemento("span", "capa-inicial", primeiraLetra(jogo.titulo)));
+    return capa;
+}
+
 function criarImagemCapa(jogo) {
+    if (!jogo.capa_url) return criarCapaPadrao(jogo);
+
     const capa = document.createElement("img");
     capa.className = "capa";
     capa.alt = "Capa de " + jogo.titulo;
-    capa.src = jogo.capa_url || CAPA_PADRAO;
+    capa.src = jogo.capa_url;
     capa.addEventListener("error", () => {
-        capa.src = CAPA_PADRAO;
+        capa.replaceWith(criarCapaPadrao(jogo));
     }, { once: true });
     return capa;
 }
@@ -85,6 +111,12 @@ export function criarCard(jogo, acoes) {
     linkCapa.href = urlDetalhe(jogo);
     linkCapa.appendChild(criarImagemCapa(jogo));
 
+    const areaCapa = criarElemento("div", "card-capa");
+    areaCapa.appendChild(linkCapa);
+    areaCapa.appendChild(
+        criarElemento("span", "badge badge-capa status-" + jogo.status, ROTULOS_STATUS[jogo.status])
+    );
+
     const corpo = criarElemento("div", "card-corpo");
 
     const titulo = criarElemento("h3", "card-titulo");
@@ -96,17 +128,35 @@ export function criarCard(jogo, acoes) {
         corpo.appendChild(criarElemento("p", "card-meta", detalhes));
     }
 
-    corpo.appendChild(
-        criarElemento("span", "badge status-" + jogo.status, ROTULOS_STATUS[jogo.status])
-    );
+    if (jogo.nota) {
+        const estrelas = criarElemento("p", "card-nota", criarEstrelas(jogo.nota));
+        estrelas.setAttribute("aria-label", "Nota " + jogo.nota + " de 5");
+        corpo.appendChild(estrelas);
+    } else {
+        corpo.appendChild(criarElemento("p", "card-meta", "Sem nota"));
+    }
 
-    const nota = jogo.nota ? "★ " + jogo.nota + "/5" : "Sem nota";
-    corpo.appendChild(criarElemento("p", "card-meta", nota));
+    const progresso = criarElemento("div", "card-progresso");
+    if (jogo.horas_estimadas) {
+        const jogadas = Number(jogo.horas_jogadas);
+        const estimadas = Number(jogo.horas_estimadas);
+        const percentual = Math.min(100, Math.round((jogadas / estimadas) * 100));
 
-    const horas = jogo.horas_estimadas
-        ? jogo.horas_jogadas + " h de " + jogo.horas_estimadas + " h"
-        : jogo.horas_jogadas + " h jogadas";
-    corpo.appendChild(criarElemento("p", "card-meta", horas));
+        progresso.appendChild(
+            criarElemento("p", "card-meta", formatarHoras(jogadas) + " de " + formatarHoras(estimadas))
+        );
+
+        const trilho = criarElemento("div", "barra-trilho");
+        const preenchimento = criarElemento("div", "barra-preenchimento");
+        preenchimento.style.width = percentual + "%";
+        trilho.appendChild(preenchimento);
+        progresso.appendChild(trilho);
+    } else {
+        progresso.appendChild(
+            criarElemento("p", "card-meta", formatarHoras(jogo.horas_jogadas) + " jogadas")
+        );
+    }
+    corpo.appendChild(progresso);
 
     const rodape = criarElemento("div", "card-acoes");
     rodape.appendChild(
@@ -116,7 +166,7 @@ export function criarCard(jogo, acoes) {
         criarBotao("Excluir", "btn-secundario btn-pequeno btn-perigo", () => acoes.aoExcluir(jogo))
     );
 
-    card.appendChild(linkCapa);
+    card.appendChild(areaCapa);
     card.appendChild(corpo);
     card.appendChild(rodape);
     return card;

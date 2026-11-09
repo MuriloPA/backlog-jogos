@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;600;700&display=swap");
+
 :root {
     --fundo: #0d0618;
     --card: #1a0f33;
@@ -12,6 +14,11 @@
     --status-zerado: #4ade80;
     --sucesso: #4ade80;
     --brilho: rgba(255, 61, 154, 0.45);
+    --estrela: #ffcf4a;
+    --fonte-titulo: "Chakra Petch", "Segoe UI", Arial, sans-serif;
+    --fonte-texto: "Inter", "Segoe UI", Arial, sans-serif;
+    color-scheme: dark;
+    scrollbar-color: var(--borda) var(--fundo);
 }
 
 * {
@@ -24,9 +31,33 @@
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: var(--fonte-texto);
     background: var(--fundo);
     color: var(--texto);
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+.logo,
+.menu a,
+.btn-principal,
+.btn-secundario,
+.indicador-valor,
+.rosca-total {
+    font-family: var(--fonte-titulo);
+}
+
+::selection {
+    background: var(--destaque);
+    color: #fff;
 }
 
 h1 {
@@ -482,9 +513,13 @@ a.btn-secundario {
 
 .filtros {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr)) auto;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
     gap: 0.6rem;
     margin-bottom: 0.8rem;
+}
+
+.filtro-busca {
+    grid-column: 1 / -1;
 }
 
 .filtros input,
@@ -526,16 +561,56 @@ a.btn-secundario {
     border: 1px solid var(--borda);
     border-radius: 8px;
     overflow: hidden;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
 .card:hover {
     border-color: var(--destaque);
     box-shadow: 0 0 16px var(--brilho);
+    transform: translateY(-4px);
+}
+
+.card-capa {
+    position: relative;
+    overflow: hidden;
 }
 
 .card-link {
     display: block;
+    text-decoration: none;
+}
+
+.card .capa {
+    transition: transform 0.35s ease;
+}
+
+.card:hover .capa {
+    transform: scale(1.06);
+}
+
+.card .badge-capa {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.6rem;
+    margin: 0;
+    border: 1px solid currentColor;
+    background: rgba(13, 6, 24, 0.85);
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+}
+
+.capa.capa-vazia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.capa-inicial {
+    font-family: var(--fonte-titulo);
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .capa {
@@ -571,6 +646,25 @@ a.btn-secundario {
     font-size: 0.85rem;
     color: var(--suave);
     overflow-wrap: anywhere;
+}
+
+.card-nota {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    color: var(--estrela);
+}
+
+.card-progresso {
+    margin-top: 0.4rem;
+}
+
+.card-progresso .card-meta {
+    margin: 0 0 0.3rem;
+}
+
+.card-progresso .barra-trilho {
+    height: 0.4rem;
 }
 
 .card-acoes {
@@ -1074,13 +1168,21 @@ a.btn-secundario {
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .card .capa {
+        transition: none;
+    }
+
+    .card:hover,
+    .card:hover .capa {
+        transform: none;
+    }
+}
+
 @media (max-width: 900px) {
     .filtros {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .filtro-busca {
-        grid-column: 1 / -1;
     }
 
     .sorteio-form {
