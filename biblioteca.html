@@ -6,6 +6,7 @@
     <title>Biblioteca - PlayLog</title>
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/componentes.css">
 </head>
 <body>
     <header class="topo">
@@ -103,7 +104,17 @@
 
         <h2>Sua biblioteca</h2>
 
-        <p id="carregando" class="vazio">Carregando seus jogos...</p>
+        <section id="resumo-biblioteca" class="resumo-faixa" aria-label="Resumo da biblioteca" hidden></section>
+
+        <section id="carregando" class="grade" role="status" aria-busy="true">
+            <span class="somente-leitor">Carregando seus jogos...</span>
+            <div class="card-esqueleto" aria-hidden="true"><div class="esq-capa"></div><div class="esq-linha"></div><div class="esq-linha esq-curta"></div></div>
+            <div class="card-esqueleto" aria-hidden="true"><div class="esq-capa"></div><div class="esq-linha"></div><div class="esq-linha esq-curta"></div></div>
+            <div class="card-esqueleto" aria-hidden="true"><div class="esq-capa"></div><div class="esq-linha"></div><div class="esq-linha esq-curta"></div></div>
+            <div class="card-esqueleto" aria-hidden="true"><div class="esq-capa"></div><div class="esq-linha"></div><div class="esq-linha esq-curta"></div></div>
+            <div class="card-esqueleto" aria-hidden="true"><div class="esq-capa"></div><div class="esq-linha"></div><div class="esq-linha esq-curta"></div></div>
+            <div class="card-esqueleto" aria-hidden="true"><div class="esq-capa"></div><div class="esq-linha"></div><div class="esq-linha esq-curta"></div></div>
+        </section>
 
         <div id="erro-carregar" hidden>
             <p id="texto-erro" class="vazio"></p>
@@ -141,8 +152,18 @@
         </section>
 
         <p id="contador" class="contador"></p>
-        <p id="vazio" class="vazio" hidden>Você ainda não adicionou nenhum jogo.</p>
-        <p id="sem-resultados" class="vazio" hidden>Nenhum jogo encontrado com esses filtros.</p>
+        <div id="vazio" class="estado-vazio" hidden>
+            <svg class="icone-vazio" viewBox="0 0 56 40" aria-hidden="true"><path d="M10 8h36a8 8 0 0 1 7.800 6.300l2 10.500a6.500 6.500 0 0 1-11.200 5.600L40 26H16l-4.600 4.400A6.500 6.500 0 0 1 .2 24.800l2-10.500A8 8 0 0 1 10 8z" fill="currentColor"/><path class="icone-detalhe" d="M15 15v3h-3v3h3v3h3v-3h3v-3h-3v-3z"/><circle class="icone-detalhe" cx="39" cy="15" r="2.4"/><circle class="icone-detalhe" cx="45" cy="20" r="2.4"/></svg>
+            <h3>Sua biblioteca está vazia</h3>
+            <p>Cadastre o primeiro jogo e comece a montar a sua fila.</p>
+            <button type="button" id="btn-primeiro-jogo" class="btn-principal">Adicionar meu primeiro jogo</button>
+        </div>
+        <div id="sem-resultados" class="estado-vazio" hidden>
+            <svg class="icone-vazio" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.500-3.500"/><path d="M8.500 11h5"/></svg>
+            <h3>Nenhum jogo encontrado</h3>
+            <p>Nenhum jogo combina com esses filtros. Tente outra busca ou limpe os filtros.</p>
+            <button type="button" id="btn-limpar-vazio" class="btn-secundario">Limpar filtros</button>
+        </div>
         <section id="lista-jogos" class="grade"></section>
     </main>
 

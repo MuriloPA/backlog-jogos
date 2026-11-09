@@ -78,7 +78,12 @@ function formatarData(valor) {
 }
 
 function criarEstrelas(nota) {
-    return "★".repeat(nota) + "☆".repeat(5 - nota);
+    const estrelas = criarElemento("span", "estrelas");
+    estrelas.setAttribute("role", "img");
+    estrelas.setAttribute("aria-label", "Nota " + nota + " de 5");
+    estrelas.appendChild(criarElemento("span", "estrela-cheia", "★".repeat(nota)));
+    estrelas.appendChild(criarElemento("span", "estrela-vazia", "★".repeat(5 - nota)));
+    return estrelas;
 }
 
 function criarTags(texto, classeExtra) {
@@ -129,9 +134,9 @@ export function criarCard(jogo, acoes) {
     }
 
     if (jogo.nota) {
-        const estrelas = criarElemento("p", "card-nota", criarEstrelas(jogo.nota));
-        estrelas.setAttribute("aria-label", "Nota " + jogo.nota + " de 5");
-        corpo.appendChild(estrelas);
+        const bloco = criarElemento("p", "card-nota");
+        bloco.appendChild(criarEstrelas(jogo.nota));
+        corpo.appendChild(bloco);
     } else {
         corpo.appendChild(criarElemento("p", "card-meta", "Sem nota"));
     }
@@ -221,9 +226,15 @@ export function criarDetalhe(jogo) {
     infos.appendChild(
         criarInfo("Status", criarElemento("span", "badge status-" + jogo.status, ROTULOS_STATUS[jogo.status]))
     );
-    infos.appendChild(
-        criarInfo("Nota", jogo.nota ? criarEstrelas(jogo.nota) + " " + jogo.nota + "/5" : "Sem nota")
-    );
+
+    const notaDetalhe = criarElemento("span", "info-valor");
+    if (jogo.nota) {
+        notaDetalhe.append(criarEstrelas(jogo.nota), " " + jogo.nota + "/5");
+    } else {
+        notaDetalhe.textContent = "Sem nota";
+    }
+    infos.appendChild(criarInfo("Nota", notaDetalhe));
+
     infos.appendChild(criarInfo("Horas jogadas", formatarHoras(jogo.horas_jogadas)));
     infos.appendChild(
         criarInfo("Horas para zerar", jogo.horas_estimadas === null ? "Não informado" : formatarHoras(jogo.horas_estimadas))

@@ -8,6 +8,7 @@ import { criarSeletorChips } from "./chips.js";
 import { separarLista, normalizar, filtrarJogos, ordenarJogos, listarOpcoes } from "./filtros.js";
 import { descreverErro } from "./erros.js";
 import { confirmar } from "./confirmar.js";
+import { calcularResumo } from "./stats.js";
 
 const LIMITE_TITULO = 120;
 const LIMITE_URL = 500;
@@ -22,6 +23,7 @@ const botaoRecarregar = document.getElementById("btn-recarregar");
 const vazio = document.getElementById("vazio");
 const semResultados = document.getElementById("sem-resultados");
 const contador = document.getElementById("contador");
+const faixaResumo = document.getElementById("resumo-biblioteca");
 const painelFiltros = document.getElementById("painel-filtros");
 const campoBusca = document.getElementById("busca");
 const filtroStatus = document.getElementById("filtro-status");
@@ -210,6 +212,44 @@ function atualizarOpcoesFiltros() {
     preencherSelect(filtroGenero, generos, "Todos os gêneros");
 }
 
+function criarItemResumo(classePonto, numero, rotulo) {
+    const item = document.createElement("div");
+    item.className = "resumo-item";
+
+    const ponto = document.createElement("span");
+    ponto.className = "resumo-ponto " + classePonto;
+
+    const valor = document.createElement("strong");
+    valor.textContent = String(numero);
+
+    const texto = document.createElement("span");
+    texto.textContent = rotulo;
+
+    item.append(ponto, valor, texto);
+    return item;
+}
+
+function renderizarResumo() {
+    const dados = calcularResumo(jogosCarregados);
+    faixaResumo.hidden = dados.total === 0;
+    faixaResumo.replaceChildren(
+        criarItemResumo("resumo-ponto-total", dados.total, dados.total === 1 ? "jogo" : "jogos"),
+        criarItemResumo("resumo-ponto-fila", dados.porStatus.fila, "na fila"),
+        criarItemResumo("resumo-ponto-jogando", dados.porStatus.jogando, "jogando"),
+        criarItemResumo(
+            "resumo-ponto-zerado",
+            dados.porStatus.zerado,
+            dados.porStatus.zerado === 1 ? "zerado" : "zerados"
+        )
+    );
+}
+
+function abrirFormulario() {
+    painel.open = true;
+    painel.scrollIntoView({ behavior: "smooth" });
+    form.elements["titulo"].focus({ preventScroll: true });
+}
+
 function renderizarLista() {
     const criterios = {
         busca: campoBusca.value,
@@ -280,6 +320,7 @@ async function carregarJogos() {
     erroCarregar.hidden = true;
     jogosCarregados = data;
     atualizarOpcoesFiltros();
+    renderizarResumo();
     renderizarLista();
 }
 
@@ -325,6 +366,8 @@ async function iniciar() {
     filtroGenero.addEventListener("change", renderizarLista);
     seletorOrdenacao.addEventListener("change", renderizarLista);
     botaoLimpar.addEventListener("click", limparFiltros);
+    document.getElementById("btn-limpar-vazio").addEventListener("click", limparFiltros);
+    document.getElementById("btn-primeiro-jogo").addEventListener("click", abrirFormulario);
 
     form.addEventListener("submit", async (evento) => {
         evento.preventDefault();

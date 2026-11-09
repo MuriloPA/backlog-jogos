@@ -1,0 +1,146 @@
+.estrelas {
+    letter-spacing: 2px;
+}
+
+.estrela-cheia {
+    color: var(--estrela);
+}
+
+.estrela-vazia {
+    color: var(--borda);
+}
+
+.resumo-faixa {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0 0 1.2rem;
+}
+
+.resumo-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--borda);
+    border-radius: 999px;
+    background: var(--card);
+    font-size: 0.9rem;
+}
+
+.resumo-item strong {
+    font-family: var(--fonte-titulo);
+    font-size: 1.05rem;
+}
+
+.resumo-ponto {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+}
+
+.resumo-ponto-total {
+    background: var(--destaque);
+}
+
+.resumo-ponto-fila {
+    background: var(--status-fila);
+}
+
+.resumo-ponto-jogando {
+    background: var(--status-jogando);
+}
+
+.resumo-ponto-zerado {
+    background: var(--status-zerado);
+}
+
+.card-esqueleto {
+    overflow: hidden;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    background: var(--card);
+}
+
+.esq-capa,
+.esq-linha {
+    background: linear-gradient(90deg, var(--card-claro) 25%, #35215f 50%, var(--card-claro) 75%);
+    background-size: 200% 100%;
+    animation: esqueleto-brilho 1.4s linear infinite;
+}
+
+.esq-capa {
+    aspect-ratio: 3 / 4;
+}
+
+.esq-linha {
+    height: 0.8rem;
+    margin: 0.9rem 0.8rem 0;
+    border-radius: 4px;
+}
+
+.esq-curta {
+    width: 55%;
+    margin-bottom: 1.2rem;
+}
+
+@keyframes esqueleto-brilho {
+    from {
+        background-position: 200% 0;
+    }
+    to {
+        background-position: -200% 0;
+    }
+}
+
+.somente-leitor {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.estado-vazio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 3rem 1rem;
+    border: 1px dashed var(--borda);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--card) 60%, transparent);
+    text-align: center;
+}
+
+.estado-vazio h3 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.estado-vazio p {
+    max-width: 34ch;
+    margin: 0 0 0.6rem;
+    color: var(--suave);
+    line-height: 1.5;
+}
+
+.icone-vazio {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 0.4rem;
+    color: var(--destaque);
+    filter: drop-shadow(0 0 14px var(--brilho));
+}
+
+.icone-detalhe {
+    fill: var(--fundo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .esq-capa,
+    .esq-linha {
+        animation: none;
+    }
+}
