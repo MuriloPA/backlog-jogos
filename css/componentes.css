@@ -144,3 +144,41 @@
         animation: none;
     }
 }
+
+.detalhe {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.detalhe > :not(.detalhe-fundo) {
+    position: relative;
+}
+
+.detalhe-fundo {
+    position: absolute;
+    inset: -60px;
+    z-index: -1;
+    width: calc(100% + 120px);
+    height: calc(100% + 120px);
+    object-fit: cover;
+    opacity: 0.32;
+    filter: blur(36px) saturate(1.3);
+    pointer-events: none;
+    animation: fundo-entrada 0.8s ease-out;
+}
+
+@keyframes fundo-entrada {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.32;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .detalhe-fundo {
+        animation: none;
+    }
+}

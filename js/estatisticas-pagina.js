@@ -42,16 +42,36 @@ function renderizarIndicadores(resumo) {
         detalheFila = plural(resumo.filaSemEstimativa, "jogo sem estimativa fora da conta", "jogos sem estimativa fora da conta");
     }
 
+    const inteiro = (valor) => String(Math.round(valor));
+    const comUmaCasa = (valor) => formatarNumero(valor);
+
     areaIndicadores.replaceChildren(
-        criarIndicador("Jogos na biblioteca", String(total), porStatus.fila + " na fila"),
-        criarIndicador("Jogos zerados", String(porStatus.zerado), percentualZerados + "% da biblioteca"),
+        criarIndicador("Jogos na biblioteca", String(total), porStatus.fila + " na fila", {
+            alvo: total,
+            formatar: inteiro
+        }),
+        criarIndicador("Jogos zerados", String(porStatus.zerado), percentualZerados + "% da biblioteca", {
+            alvo: porStatus.zerado,
+            formatar: inteiro
+        }),
         criarIndicador(
             "Nota média",
             resumo.notaMedia === null ? "—" : formatarNumero(resumo.notaMedia) + " / 5",
-            detalheNota
+            detalheNota,
+            resumo.notaMedia === null
+                ? null
+                : { alvo: resumo.notaMedia, formatar: (valor) => comUmaCasa(valor) + " / 5" }
         ),
-        criarIndicador("Horas jogadas", formatarNumero(resumo.horasJogadas) + " h", "Somando todos os jogos"),
-        criarIndicador("Horas para zerar a fila", formatarNumero(resumo.horasRestantesFila) + " h", detalheFila)
+        criarIndicador("Horas jogadas", formatarNumero(resumo.horasJogadas) + " h", "Somando todos os jogos", {
+            alvo: resumo.horasJogadas,
+            formatar: (valor) => comUmaCasa(valor) + " h"
+        }),
+        criarIndicador(
+            "Horas para zerar a fila",
+            formatarNumero(resumo.horasRestantesFila) + " h",
+            detalheFila,
+            { alvo: resumo.horasRestantesFila, formatar: (valor) => comUmaCasa(valor) + " h" }
+        )
     );
 }
 

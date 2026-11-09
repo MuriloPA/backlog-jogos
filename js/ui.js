@@ -69,6 +69,25 @@ function criarImagemCapa(jogo) {
     return capa;
 }
 
+function criarFundoDetalhe(jogo) {
+    if (jogo.capa_url) {
+        const imagem = document.createElement("img");
+        imagem.className = "detalhe-fundo";
+        imagem.alt = "";
+        imagem.setAttribute("aria-hidden", "true");
+        imagem.src = jogo.capa_url;
+        imagem.addEventListener("error", () => imagem.remove(), { once: true });
+        return imagem;
+    }
+
+    const fundo = criarElemento("div", "detalhe-fundo");
+    fundo.setAttribute("aria-hidden", "true");
+    const matiz = calcularMatiz(jogo.titulo);
+    fundo.style.background =
+        "linear-gradient(160deg, hsl(" + matiz + ", 70%, 46%), hsl(" + matiz + ", 60%, 16%))";
+    return fundo;
+}
+
 function formatarHoras(valor) {
     return String(Number(valor)).replace(".", ",") + " h";
 }
@@ -211,6 +230,7 @@ export function criarResultadoSorteio(jogo, dados, aoComecar) {
 
 export function criarDetalhe(jogo) {
     const artigo = criarElemento("article", "detalhe");
+    artigo.appendChild(criarFundoDetalhe(jogo));
     artigo.appendChild(criarImagemCapa(jogo));
 
     const corpo = criarElemento("div", "detalhe-corpo");
