@@ -107,8 +107,9 @@ export function criarRosca(itens) {
     return container;
 }
 
-export function criarBarras(itens) {
-    const lista = criarElemento("ul", "barras");
+export function criarBarras(itens, opcoes = {}) {
+    const formatar = opcoes.formatar || inteiro;
+    const lista = criarElemento("ul", opcoes.larga ? "barras barras-largas" : "barras");
     if (itens.length === 0) return lista;
 
     const maximo = Math.max(...itens.map((item) => item.valor));
@@ -120,13 +121,13 @@ export function criarBarras(itens) {
 
         const trilho = criarElemento("div", "barra-trilho");
         const preenchimento = criarElemento("div", "barra-preenchimento");
-        const larguraFinal = (item.valor / maximo) * 100 + "%";
+        const larguraFinal = (maximo > 0 ? (item.valor / maximo) * 100 : 0) + "%";
         preenchimento.style.width = larguraFinal;
         trilho.appendChild(preenchimento);
         animarElemento(preenchimento, [{ width: "0%" }, { width: larguraFinal }], posicao * 70);
 
         const valor = criarElemento("span", "barra-valor");
-        animarNumero(valor, item.valor, inteiro, posicao * 70);
+        animarNumero(valor, item.valor, formatar, posicao * 70);
 
         linha.append(rotulo, trilho, valor);
         lista.appendChild(linha);
