@@ -128,6 +128,30 @@ function criarInfo(rotulo, valor) {
     return bloco;
 }
 
+function criarProgressoCard(jogo) {
+    const progresso = criarElemento("div", "card-progresso");
+    if (jogo.horas_estimadas) {
+        const jogadas = Number(jogo.horas_jogadas);
+        const estimadas = Number(jogo.horas_estimadas);
+        const percentual = Math.min(100, Math.round((jogadas / estimadas) * 100));
+
+        progresso.appendChild(
+            criarElemento("p", "card-meta", formatarHoras(jogadas) + " de " + formatarHoras(estimadas))
+        );
+
+        const trilho = criarElemento("div", "barra-trilho");
+        const preenchimento = criarElemento("div", "barra-preenchimento");
+        preenchimento.style.width = percentual + "%";
+        trilho.appendChild(preenchimento);
+        progresso.appendChild(trilho);
+    } else {
+        progresso.appendChild(
+            criarElemento("p", "card-meta", formatarHoras(jogo.horas_jogadas) + " jogadas")
+        );
+    }
+    return progresso;
+}
+
 export function criarCard(jogo, acoes) {
     const card = criarElemento("article", "card");
 
@@ -160,27 +184,7 @@ export function criarCard(jogo, acoes) {
         corpo.appendChild(criarElemento("p", "card-meta", "Sem nota"));
     }
 
-    const progresso = criarElemento("div", "card-progresso");
-    if (jogo.horas_estimadas) {
-        const jogadas = Number(jogo.horas_jogadas);
-        const estimadas = Number(jogo.horas_estimadas);
-        const percentual = Math.min(100, Math.round((jogadas / estimadas) * 100));
-
-        progresso.appendChild(
-            criarElemento("p", "card-meta", formatarHoras(jogadas) + " de " + formatarHoras(estimadas))
-        );
-
-        const trilho = criarElemento("div", "barra-trilho");
-        const preenchimento = criarElemento("div", "barra-preenchimento");
-        preenchimento.style.width = percentual + "%";
-        trilho.appendChild(preenchimento);
-        progresso.appendChild(trilho);
-    } else {
-        progresso.appendChild(
-            criarElemento("p", "card-meta", formatarHoras(jogo.horas_jogadas) + " jogadas")
-        );
-    }
-    corpo.appendChild(progresso);
+    corpo.appendChild(criarProgressoCard(jogo));
 
     const rodape = criarElemento("div", "card-acoes");
     rodape.appendChild(
@@ -193,6 +197,41 @@ export function criarCard(jogo, acoes) {
     card.appendChild(areaCapa);
     card.appendChild(corpo);
     card.appendChild(rodape);
+    return card;
+}
+
+export function criarCardMini(jogo, opcoes = {}) {
+    const card = criarElemento("article", "card card-mini");
+
+    const linkCapa = criarElemento("a", "card-link");
+    linkCapa.href = urlDetalhe(jogo);
+    linkCapa.appendChild(criarImagemCapa(jogo));
+
+    const areaCapa = criarElemento("div", "card-capa");
+    areaCapa.appendChild(linkCapa);
+
+    const corpo = criarElemento("div", "card-corpo");
+
+    const titulo = criarElemento("h3", "card-titulo");
+    titulo.appendChild(criarLink(jogo.titulo, "", urlDetalhe(jogo)));
+    corpo.appendChild(titulo);
+
+    if (opcoes.detalhe) {
+        corpo.appendChild(criarElemento("p", "card-meta", opcoes.detalhe));
+    }
+
+    if (opcoes.mostrarNota && jogo.nota) {
+        const bloco = criarElemento("p", "card-nota");
+        bloco.appendChild(criarEstrelas(jogo.nota));
+        corpo.appendChild(bloco);
+    }
+
+    if (opcoes.mostrarProgresso) {
+        corpo.appendChild(criarProgressoCard(jogo));
+    }
+
+    card.appendChild(areaCapa);
+    card.appendChild(corpo);
     return card;
 }
 

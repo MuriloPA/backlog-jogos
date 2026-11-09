@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Início - PlayLog</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/componentes.css">
+    <link rel="stylesheet" href="css/inicio.css">
+</head>
+<body>
+    <header class="topo">
+        <div class="topo-esquerda">
+            <a class="logo" href="inicio.html" aria-label="PlayLog"><img src="assets/logo.svg" alt=""><span>Play<b>Log</b></span></a>
+            <nav class="menu">
+                <a href="inicio.html" aria-current="page">Início</a>
+                <a href="biblioteca.html">Biblioteca</a>
+                <a href="sorteio.html">Sorteio</a>
+                <a href="estatisticas.html">Estatísticas</a>
+            </nav>
+        </div>
+        <div>
+            <span id="usuario"></span>
+            <button id="btn-sair" class="btn-secundario">Sair</button>
+        </div>
+    </header>
+
+    <main class="conteudo">
+        <div class="inicio-topo">
+            <div>
+                <h2 id="saudacao">Olá</h2>
+                <p class="inicio-subtitulo">Veja como está a sua biblioteca hoje.</p>
+            </div>
+            <div class="acoes-inicio">
+                <a class="btn-principal" href="sorteio.html">Sortear um jogo</a>
+                <a class="btn-secundario" href="biblioteca.html">Adicionar jogo</a>
+            </div>
+        </div>
+
+        <section id="carregando" class="grade-mini secao-inicio" role="status" aria-busy="true">
+            <span class="somente-leitor">Carregando seu painel...</span>
+            <div class="card-esqueleto" aria-hidden="true"><div class="esq-capa"></div><div class="esq-linha"></div><div class="esq-linha esq-curta"></div></div>
+            <div class="card-esqueleto" aria-hidden="true"><div class="esq-capa"></div><div class="esq-linha"></div><div class="esq-linha esq-curta"></div></div>
+            <div class="card-esqueleto" aria-hidden="true"><div class="esq-capa"></div><div class="esq-linha"></div><div class="esq-linha esq-curta"></div></div>
+            <div class="card-esqueleto" aria-hidden="true"><div class="esq-capa"></div><div class="esq-linha"></div><div class="esq-linha esq-curta"></div></div>
+        </section>
+
+        <div id="erro-carregar" hidden>
+            <p id="texto-erro" class="vazio"></p>
+            <button type="button" id="btn-recarregar" class="btn-secundario">Tentar novamente</button>
+        </div>
+
+        <div id="vazio-inicio" class="estado-vazio secao-inicio" hidden>
+            <svg class="icone-vazio" viewBox="0 0 56 40" aria-hidden="true"><path d="M10 8h36a8 8 0 0 1 7.800 6.300l2 10.500a6.500 6.500 0 0 1-11.200 5.600L40 26H16l-4.600 4.400A6.500 6.500 0 0 1 .2 24.800l2-10.500A8 8 0 0 1 10 8z" fill="currentColor"/><path class="icone-detalhe" d="M15 15v3h-3v3h3v3h3v-3h3v-3h-3v-3z"/><circle class="icone-detalhe" cx="39" cy="15" r="2.4"/><circle class="icone-detalhe" cx="45" cy="20" r="2.4"/></svg>
+            <h3>Bem-vindo ao PlayLog</h3>
+            <p>Cadastre o primeiro jogo e o seu painel ganha vida.</p>
+            <a class="btn-principal" href="biblioteca.html">Adicionar meu primeiro jogo</a>
+        </div>
+
+        <div id="painel-inicio" hidden>
+            <section id="indicadores-inicio" class="indicadores"></section>
+
+            <section id="sec-andamento" class="secao-inicio" hidden>
+                <div class="secao-cabecalho">
+                    <h3>Continuar jogando</h3>
+                </div>
+                <div id="lista-andamento" class="grade-mini"></div>
+            </section>
+
+            <section id="sec-proximo" class="secao-inicio" hidden>
+                <div class="secao-cabecalho">
+                    <h3>Próximo da fila</h3>
+                    <a href="sorteio.html">Prefere sortear?</a>
+                </div>
+                <div id="area-proximo"></div>
+            </section>
+
+            <section id="sec-recentes" class="secao-inicio" hidden>
+                <div class="secao-cabecalho">
+                    <h3>Adicionados recentemente</h3>
+                    <a href="biblioteca.html">Ver biblioteca</a>
+                </div>
+                <div id="lista-recentes" class="grade-mini"></div>
+            </section>
+
+            <section id="sec-melhores" class="secao-inicio" hidden>
+                <div class="secao-cabecalho">
+                    <h3>Mais bem avaliados</h3>
+                </div>
+                <div id="lista-melhores" class="grade-mini"></div>
+            </section>
+        </div>
+    </main>
+
+    <script type="module" src="js/inicio-pagina.js"></script>
+</body>
+</html>

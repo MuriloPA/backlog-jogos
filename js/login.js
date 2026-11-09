@@ -39,7 +39,7 @@ function camposValidos(exigirTamanhoDaSenha) {
 }
 
 obterSessao().then((sessao) => {
-    if (sessao) window.location.href = "biblioteca.html";
+    if (sessao) window.location.href = "inicio.html";
 });
 
 form.addEventListener("submit", async (evento) => {
@@ -55,7 +55,7 @@ form.addEventListener("submit", async (evento) => {
         mostrarMensagem(traduzirErro(error), true);
         return;
     }
-    window.location.href = "biblioteca.html";
+    window.location.href = "inicio.html";
 });
 
 botaoCriar.addEventListener("click", async () => {
@@ -76,5 +76,5 @@ botaoCriar.addEventListener("click", async () => {
         mostrarMensagem("Conta criada. Confirme o e-mail para entrar.", false);
         return;
     }
-    window.location.href = "biblioteca.html";
+    window.location.href = "inicio.html";
 });

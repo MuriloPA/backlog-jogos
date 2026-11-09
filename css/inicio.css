@@ -1,0 +1,92 @@
+.inicio-topo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inicio-topo h2 {
+    margin: 0;
+}
+
+.inicio-subtitulo {
+    margin: 0.3rem 0 0;
+    color: var(--suave);
+}
+
+.acoes-inicio {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.secao-inicio {
+    margin-top: 2rem;
+}
+
+.secao-cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.secao-cabecalho h3 {
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+.secao-cabecalho a {
+    color: var(--suave);
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.secao-cabecalho a:hover {
+    color: var(--destaque);
+}
+
+.grade-mini {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.card-mini .capa-inicial {
+    font-size: 2.4rem;
+}
+
+.card-mini .card-corpo {
+    padding: 0.7rem;
+}
+
+.card-mini .card-titulo {
+    font-size: 0.95rem;
+}
+
+.card-mini .card-nota {
+    font-size: 0.85rem;
+}
+
+.destaque-fila {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 1rem;
+    align-items: stretch;
+    max-width: 520px;
+}
+
+.destaque-fila .card-corpo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+}
+
+@media (max-width: 480px) {
+    .destaque-fila {
+        grid-template-columns: 110px minmax(0, 1fr);
+    }
+}
