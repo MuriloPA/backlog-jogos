@@ -182,3 +182,12 @@
         animation: none;
     }
 }
+
+.card .badge-capa {
+    position: static;
+    display: inline-block;
+    margin: 0.8rem 0 0 0.8rem;
+    background: color-mix(in srgb, currentColor 18%, var(--card));
+    backdrop-filter: none;
+    pointer-events: auto;
+}
