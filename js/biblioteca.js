@@ -156,7 +156,7 @@ function entrarModoEdicao(jogo) {
 
     resumo.textContent = "Editar jogo";
     botaoSalvar.textContent = "Atualizar jogo";
-    botaoCancelar.hidden = false;
+    botaoCancelar.textContent = "Cancelar edição";
     painel.open = true;
     painel.scrollIntoView({ behavior: "smooth" });
 }
@@ -168,7 +168,12 @@ function sairModoEdicao() {
     seletorPlataformas.renderizar([]);
     resumo.textContent = "Adicionar jogo";
     botaoSalvar.textContent = "Salvar jogo";
-    botaoCancelar.hidden = true;
+    botaoCancelar.textContent = "Cancelar";
+}
+
+function cancelarFormulario() {
+    sairModoEdicao();
+    painel.open = false;
 }
 
 function abrirEdicaoPelaUrl() {
@@ -340,7 +345,7 @@ async function iniciar() {
         window.location.href = "index.html";
     });
 
-    botaoCancelar.addEventListener("click", sairModoEdicao);
+    botaoCancelar.addEventListener("click", cancelarFormulario);
 
     botaoRecarregar.addEventListener("click", async () => {
         erroCarregar.hidden = true;
