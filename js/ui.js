@@ -89,7 +89,7 @@ function criarFundoDetalhe(jogo) {
 }
 
 function formatarHoras(valor) {
-    return String(Number(valor)).replace(".", ",") + " h";
+    return String(Math.round(Number(valor) * 10) / 10).replace(".", ",") + " h";
 }
 
 function formatarData(valor) {
